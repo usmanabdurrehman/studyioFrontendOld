@@ -1,0 +1,60 @@
+.card {
+  box-shadow: 2px 2px 8px #aaa;
+  background-color: white;
+}
+
+.cardHeader {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardBody {
+  padding: 0 10px 10px 0;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  resize: none;
+}
+
+.textarea:focus {
+  outline: none;
+}
+
+.addButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+#image {
+  display: none;
+}
+
+.attachIcon {
+  cursor: pointer;
+}
+
+.fileContainer {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.fileContainer > div {
+  margin: 0;
+}
+
+.fileContainer > div + div {
+  margin-left: 15px;
+}
+
+.fileIcon {
+  width: 40px;
+}

@@ -1,0 +1,62 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  background-color: white;
+}
+
+.formContainer {
+  display: flex;
+  align-items: center;
+  padding-left: 60px;
+}
+
+.formImage {
+  background: url("./background1.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.input {
+  width: 400px !important;
+  display: block !important;
+  margin: 10px 0 !important;
+}
+
+.input:focus {
+  border-bottom-color: blue;
+}
+
+.background {
+  background-image: url("background3.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.checkboxWrapper {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.checkbox {
+  margin-left: -12px !important;
+  color: #007bff;
+}
+
+.checkboxDescription {
+  margin: 0 0 0 5px;
+  font-size: 13px;
+}
+
+.linkText {
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.link {
+  color: #007bff;
+}

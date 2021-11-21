@@ -1,0 +1,113 @@
+.navbar {
+  background-color: rgb(0, 123, 255);
+  height: 70px;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navWrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.search {
+  margin-left: 30px;
+  padding: 10px;
+  border-radius: 0 20px 20px 0;
+  border: none;
+  width: 300px;
+}
+
+.search:focus {
+  outline: none;
+}
+
+.notificationWrapper {
+  position: relative;
+}
+
+.notificationsList {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 300px;
+  z-index: 2;
+}
+
+.nameList {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  margin-left: 30px;
+  width: 300px;
+  z-index: 2;
+}
+
+.nameList > div,
+.notificationsList > div {
+  padding: 10px;
+  background: white;
+  color: black;
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.nameList > div:hover {
+  background: #f4f4f4;
+}
+
+.nameList > div > a {
+  color: black;
+  display: flex;
+  align-items: center;
+}
+
+.searchName {
+  margin-left: 10px;
+}
+
+.navWrapper > div {
+  display: flex;
+}
+
+.menu > div + div {
+  margin-left: 20px;
+}
+
+.menu > div {
+  cursor: pointer;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+}
+
+.profileImage {
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+}
+
+.searchImage {
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+}
+
+.notificationItem {
+  display: flex;
+  align-items: center;
+}
+
+.notificationMessage {
+  margin-left: 10px;
+}

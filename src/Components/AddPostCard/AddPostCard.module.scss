@@ -21,6 +21,7 @@
   padding: 10px;
   border: none;
   resize: none;
+  cursor: text;
 }
 
 .textarea:focus {
@@ -33,12 +34,21 @@
   margin-top: 10px;
 }
 
-#image {
+#image,
+#attach {
   display: none;
 }
 
-.attachIcon {
+.icon {
   cursor: pointer;
+}
+
+.iconsWrapper {
+  display: flex;
+}
+
+.iconsWrapper > div + div {
+  margin-left: 10px;
 }
 
 .fileContainer {
@@ -57,4 +67,13 @@
 
 .fileIcon {
   width: 40px;
+}
+
+.postImagesWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.postImagesWrapper > div > img {
+  width: 100%;
 }

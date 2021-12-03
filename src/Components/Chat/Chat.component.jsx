@@ -6,8 +6,6 @@ import SwipeableViews from "react-swipeable-views";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
-import { fetchNames } from "queries";
-
 import { getProfileImageURL } from "utils";
 
 import { service } from "services";
@@ -20,18 +18,19 @@ export default function Chat() {
   const socket = useSelector((state) => state.socket);
   const user = useSelector((state) => state.user);
   const { _id } = user;
-  let [messages, setMessages] = useState([
-    {
-      content: "Hi there, how can I help you?",
-      sender: "own",
-    },
-  ]);
+  let [messages, setMessages] = useState([]);
 
   const [searchNames, setSearchNames] = useState(null);
   const [conversations, setConversations] = useState(null);
   let fetchNamesHandler = async (name) => {
-    const data = await fetchNames(name);
-    data && setSearchNames(data);
+    service({
+      method: "post",
+      url: "/user/conversations/more",
+      body: { name },
+    }).then((res) => {
+      const { data } = res;
+      data && setSearchNames(data);
+    });
   };
 
   const onSearchChange = (e) => {
@@ -44,11 +43,12 @@ export default function Chat() {
   const messagesContainer = useRef(null);
 
   let [message, setMessage] = useState("");
-  const [openedChat, setOpenedChat] = useState();
+  const [openedChat, setOpenedChat] = useState(null);
+  const lastOpenedChat = useRef();
 
-  let appendMessage = (e) => {
-    e.preventDefault();
-  };
+  const openedChatMember = openedChat?.participants?.find(
+    (participant) => participant._id != _id
+  );
 
   const startConversation = async (profile) => {
     service({
@@ -66,8 +66,10 @@ export default function Chat() {
       url: `/user/conversations/${id}`,
     }).then((res) => {
       const { status, conversation } = res.data;
+      console.log(conversation);
       if (status) {
         setOpenedChat(conversation);
+        setMessages(conversation.messages);
         setIndex(1);
       }
     });
@@ -86,19 +88,28 @@ export default function Chat() {
     !index && getAllConversations();
   }, [index]);
 
-  const sendMessage = () => {
-    socket.emit("");
+  const sendMessage = (e) => {
+    e.preventDefault();
+    socket.emit("message", { message, conversationId: openedChat._id });
   };
 
   useEffect(() => {
-    socket.on("changes", (data) => {
-      setMessages((messages) => [...messages, data]);
+    socket.on("message_change", (message) => {
+      console.log(message);
+      console.log(_id);
+      setMessage("");
+      setMessages((messages) => [...messages, message]);
     });
   }, []);
 
   useEffect(() => {
-    socket.emit("leaveRoom", { id: "2" });
-    socket.emit("joinRoom", { id: "2" });
+    if (openedChat) {
+      console.log("join room lmao");
+      lastOpenedChat.current &&
+        socket.emit("leaveRoom", { id: lastOpenedChat.current._id });
+      socket.emit("joinRoom", { id: openedChat._id });
+      lastOpenedChat.current = openedChat;
+    }
   }, [openedChat]);
 
   useEffect(() => {
@@ -114,7 +125,7 @@ export default function Chat() {
   return (
     <div className={styles.chat}>
       <div className={styles.chatHeader}>
-        {index ? "Usama" : "Inbox"}
+        {index ? openedChatMember.name : "Inbox"}
         {index ? (
           <ArrowBackIosIcon
             className={styles.arrowBackward}
@@ -150,7 +161,7 @@ export default function Chat() {
                     (participant) => participant._id !== _id
                   );
                   return (
-                    <div onClick={() => openConversation(id)}>
+                    <div onClick={() => openConversation(conversation._id)}>
                       <img
                         src={getProfileImageURL(profileImage)}
                         alt=""
@@ -164,6 +175,7 @@ export default function Chat() {
             )}
             {searchNames && (
               <div className={styles.nameList}>
+                <h5 className={styles.searchNamesHeader}>More People</h5>
                 {searchNames.map(({ name, _id, profileImage }) => (
                   <div
                     onClick={() =>
@@ -184,18 +196,19 @@ export default function Chat() {
         </div>
         <div className={styles.chatWrapper}>
           <div className={styles.chatMessages} ref={messagesContainer}>
-            {messages.map(({ content, sender }) => (
-              <div
-                className={`${styles.chatMessage} ${
-                  sender == "own" ? styles.ownMessage : styles.notOwnMessage
-                }`}
-              >
-                {content}
-              </div>
-            ))}
+            {openedChat &&
+              messages.map(({ text, sentBy }) => (
+                <div
+                  className={`${styles.chatMessage} ${
+                    sentBy == _id ? styles.ownMessage : styles.notOwnMessage
+                  }`}
+                >
+                  {text}
+                </div>
+              ))}
           </div>
           <div className={styles.chatTextField}>
-            <form onSubmit={appendMessage}>
+            <form onSubmit={sendMessage}>
               <input
                 type="text"
                 placeholder="Write here...."

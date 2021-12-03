@@ -1,8 +1,7 @@
-import socketClient from "socket.io-client";
-const socket = socketClient("http://localhost:7000/");
-
-let SocketClientReducer = (state = socket, action) => {
+let SocketClientReducer = (state = null, action) => {
   switch (action.type) {
+    case "SET_SOCKET":
+      return action.payload;
     default:
       return state;
       break;

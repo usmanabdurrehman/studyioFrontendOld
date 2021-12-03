@@ -8,6 +8,7 @@ import styles from "./PostCard.module.scss";
 import { Button, Comment } from "Components";
 
 import { FileIcon, defaultStyles } from "react-file-icon";
+import Popover from "@material-ui/core/Popover";
 
 import { classNames, getProfileImageURL, getFileURL } from "utils";
 export default function PostCard({
@@ -17,7 +18,26 @@ export default function PostCard({
   commentOnPost,
   commentOnChange,
   comment,
+  toggleShowMore,
+  showMore,
 }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  const editPost = () => {};
+
+  const deletePost = () => {};
+
   return (
     <div className={styles.postCard}>
       <div className={styles.cardHeader}>
@@ -28,7 +48,7 @@ export default function PostCard({
         <p className={styles.nameHandle}>
           <Link to={`/profile/${post.userId}`}>{post?.user?.name}</Link>
         </p>
-        <IconButton className={styles.moreIcon}>
+        <IconButton className={styles.moreIcon} onClick={handleClick}>
           <MoreHorizIcon />
         </IconButton>
       </div>
@@ -55,6 +75,15 @@ export default function PostCard({
               </a>
             );
           })}
+        </div>
+      )}
+      {post.images && (
+        <div className={styles.postImagesWrapper}>
+          {post.images.map((image) => (
+            <div>
+              <img src={getFileURL(image)} />
+            </div>
+          ))}
         </div>
       )}
       <form className={styles.postCardFooter} onSubmit={commentOnPost}>
@@ -90,7 +119,16 @@ export default function PostCard({
             placeholder="Comment..."
           />
           {post.comments &&
-            post.comments.map((comment) => <Comment comment={comment} />)}
+            (showMore
+              ? post.comments.map((comment) => <Comment comment={comment} />)
+              : post.comments
+                  .slice(0, 2)
+                  .map((comment) => <Comment comment={comment} />))}
+          {post.comments.length > 2 && (
+            <p className={styles.moreText} onClick={toggleShowMore}>
+              {showMore ? "Show Less" : "Show More"}
+            </p>
+          )}
         </div>
         <div>
           <Button classes={{ button: styles.addCommentButton }} type="submit">
@@ -98,6 +136,29 @@ export default function PostCard({
           </Button>
         </div>
       </form>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <div className={styles.postOptions}>
+          <div className={styles.postOption} onClick={editPost}>
+            Edit
+          </div>
+          <div className={styles.postOption} onClick={deletePost}>
+            Delete
+          </div>
+        </div>
+      </Popover>
     </div>
   );
 }

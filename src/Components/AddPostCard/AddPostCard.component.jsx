@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import styles from "./AddPostCard.module.scss";
 import AttachmentIcon from "@material-ui/icons/Attachment";
 
@@ -9,7 +8,7 @@ import { Editor } from "@tinymce/tinymce-react";
 
 import { FileIcon, defaultStyles } from "react-file-icon";
 
-import { addPost } from "queries";
+import ImageIcon from "@material-ui/icons/Image";
 
 const AddPostCard = ({
   edit,
@@ -17,24 +16,42 @@ const AddPostCard = ({
   editPost,
   post,
   files,
+  images,
   onFileChange,
   onTextChange,
+  onImageChange,
 }) => {
   return (
     <div className={styles.card}>
       <div className={styles.cardHeader}>
         <div>{edit != true ? "New Post" : "Edit Post"}</div>
-        <div className={styles.profileImageWrapper}>
-          <div className={styles.fileWrapper}>
-            <input
-              type="file"
-              id={styles.image}
-              onChange={onFileChange}
-              multiple={true}
-            />
-            <label for={styles.image}>
-              <AttachmentIcon className={styles.attachIcon} />
-            </label>
+        <div className={styles.iconsWrapper}>
+          <div className={styles.profileImageWrapper}>
+            <div className={styles.fileWrapper}>
+              <input
+                type="file"
+                id={styles.image}
+                onChange={onImageChange}
+                multiple={true}
+                accept=".jpg,.png"
+              />
+              <label for={styles.image}>
+                <ImageIcon className={styles.icon} />
+              </label>
+            </div>
+          </div>
+          <div className={styles.profileImageWrapper}>
+            <div className={styles.fileWrapper}>
+              <input
+                type="file"
+                id={styles.attach}
+                onChange={onFileChange}
+                multiple={true}
+              />
+              <label for={styles.attach}>
+                <AttachmentIcon className={styles.icon} />
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -63,6 +80,15 @@ const AddPostCard = ({
                     extension={file.type.split("/")[1]}
                     {...defaultStyles[file.type.split("/")[1]]}
                   />
+                </div>
+              ))}
+            </div>
+          )}
+          {images && (
+            <div className={styles.postImagesWrapper}>
+              {images.map((image) => (
+                <div>
+                  <img src={URL.createObjectURL(image)} />
                 </div>
               ))}
             </div>

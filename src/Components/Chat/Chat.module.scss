@@ -32,6 +32,7 @@
   display: flex;
   flex-direction: column;
   overflow: auto;
+  scrollbar-width: thin;
 }
 
 .chatMessage {
@@ -57,10 +58,6 @@
 
 .chatTextField {
   height: 40px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 .chatTextField > form {
@@ -127,17 +124,13 @@
   color: black;
   font-size: 12px;
   transition: 0.3s;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .nameList > div:hover {
   background: #f4f4f4;
-}
-
-.nameList > div {
-  color: black;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
 }
 
 .searchName {
@@ -148,4 +141,8 @@
   width: 25px;
   height: 25px;
   border-radius: 4px;
+}
+
+.searchNamesHeader {
+  padding-left: 10px;
 }

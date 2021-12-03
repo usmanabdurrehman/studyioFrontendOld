@@ -12,6 +12,7 @@ export default function AddPostCardContainer({
 }) {
   const [post, setPost] = useState(edit != true ? "" : postContent);
   const [files, setFiles] = useState(null);
+  const [images, setImages] = useState(null);
 
   const addPostHandler = async (e) => {
     e.preventDefault();
@@ -20,14 +21,21 @@ export default function AddPostCardContainer({
     formdata.append("post", post);
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        formdata.append("files", files[i], files[i].name);
+        formdata.append("attachments", files[i], files[i].name);
       }
     }
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        formdata.append("images", images[i], images[i].name);
+      }
+    }
+    console.log("formdata", formdata);
 
     const { status } = await addPost(formdata);
     if (status) {
       setPost("");
       setFiles(null);
+      setImages(null);
       fetchFunction();
     }
   };
@@ -45,10 +53,20 @@ export default function AddPostCardContainer({
   };
 
   const onFileChange = (e) => {
+    console.log(e.target.files);
     if (e.target.files[0]) {
       setFiles([...e.target.files]);
     }
   };
+
+  const onImageChange = (e) => {
+    console.log(e.target.files);
+    if (e.target.files[0]) {
+      setImages([...e.target.files]);
+    }
+  };
+
+  console.log(files, images);
 
   const onTextChange = (newValue, editor) => setPost(newValue);
   return (
@@ -58,7 +76,9 @@ export default function AddPostCardContainer({
       editPost={editPostHandler}
       post={post}
       files={files}
+      images={images}
       onFileChange={onFileChange}
+      onImageChange={onImageChange}
       onTextChange={onTextChange}
     />
   );

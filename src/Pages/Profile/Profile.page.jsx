@@ -142,7 +142,7 @@ const Profile = (props) => {
       <div className={styles.posts}>
         <div>
           {profileInfo?.posts ? (
-            profileInfo?.posts?.length &&
+            profileInfo?.posts?.length > 0 &&
             profileInfo?.posts.map((post) => (
               <PostCard
                 post={post}

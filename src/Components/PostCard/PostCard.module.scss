@@ -189,3 +189,31 @@
 .fileCard > div > div {
   margin: 0;
 }
+
+.moreText {
+  color: gray;
+  cursor: pointer;
+}
+
+.moreText:hover {
+  text-decoration: underline;
+}
+
+.postImagesWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.postImagesWrapper > div > img {
+  width: 100%;
+}
+
+.postOption {
+  padding: 15px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.postOption:hover {
+  background-color: #f4f4f4;
+}

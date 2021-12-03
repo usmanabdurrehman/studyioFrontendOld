@@ -15,7 +15,9 @@ import { Badge } from "../";
 
 import { useHistory } from "react-router-dom";
 
-import { getProfileImageURL } from "utils";
+import { getProfileImageURL, classNames } from "utils";
+
+import SearchIcon from "@material-ui/icons/Search";
 
 export default function Navbar({
   user: { _id, profileImage },
@@ -37,10 +39,13 @@ export default function Navbar({
       <Container classes={{ container: styles.navWrapper }}>
         <div>
           <h2>
-            <Link to="/timeline">Study.io</Link>
+            <Link to="/timeline" className={styles.header}>
+              Study.io
+            </Link>
           </h2>
           <ClickAwayListener onClickAway={hideNamesList}>
             <div className={styles.searchWrapper}>
+              <SearchIcon className={styles.icon} />
               <input
                 placeholder="Search..."
                 className={styles.search}
@@ -69,7 +74,7 @@ export default function Navbar({
         <div className={styles.menu}>
           <div>
             <Link to="/timeline">
-              <HomeIcon />{" "}
+              <HomeIcon className={styles.icon} />{" "}
             </Link>
           </div>
           <div>
@@ -84,7 +89,10 @@ export default function Navbar({
           <ClickAwayListener onClickAway={(e) => unshowNotifications()}>
             <div className={styles.notificationWrapper}>
               <Badge number={unseenNotificationCount} color="danger">
-                <NotificationsIcon onClick={handleNotificationClick} />
+                <NotificationsIcon
+                  onClick={handleNotificationClick}
+                  className={styles.icon}
+                />
               </Badge>
               {notifications && showNotifications && (
                 <div className={styles.notificationsList}>
@@ -115,7 +123,7 @@ export default function Navbar({
             </div>
           </ClickAwayListener>
           <div onClick={logout}>
-            <ExitToAppIcon />{" "}
+            <ExitToAppIcon className={styles.icon} />{" "}
           </div>
         </div>
       </Container>

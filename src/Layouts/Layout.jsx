@@ -19,13 +19,12 @@ export default function Layout({ children, useGutter = true }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("Yo boi");
     const socketInstance = socketClient("http://localhost:7000/", {
       withCredentials: true,
     });
     socketInstance.emit("joinRoom", { id: user._id });
     dispatch({ type: "SET_SOCKET", payload: socketInstance });
-  }, []);
+  }, [socketClient, dispatch]);
 
   const user = useSelector((state) => state.user);
 

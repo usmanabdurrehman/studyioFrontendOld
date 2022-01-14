@@ -11,6 +11,8 @@ import { FileIcon, defaultStyles } from "react-file-icon";
 import Popover from "@material-ui/core/Popover";
 
 import { classNames, getProfileImageURL, getFileURL } from "utils";
+import { useSelector } from "react-redux";
+
 export default function PostCard({
   post,
   likePost,
@@ -20,7 +22,13 @@ export default function PostCard({
   comment,
   toggleShowMore,
   showMore,
+  deletePost,
+  editPost,
+  hidePost,
+  unhidePost,
 }) {
+  const user = useSelector((state) => state.user);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -33,11 +41,6 @@ export default function PostCard({
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
-  const editPost = () => {};
-
-  const deletePost = () => {};
-
   return (
     <div className={styles.postCard}>
       <div className={styles.cardHeader}>
@@ -151,12 +154,43 @@ export default function PostCard({
         }}
       >
         <div className={styles.postOptions}>
-          <div className={styles.postOption} onClick={editPost}>
-            Edit
-          </div>
-          <div className={styles.postOption} onClick={deletePost}>
-            Delete
-          </div>
+          {user._id == post.userId && (
+            <>
+              <div
+                className={styles.postOption}
+                onClick={editPost}
+                onClick={() => {
+                  handleClose();
+                  editPost(post._id);
+                }}
+              >
+                Edit
+              </div>
+              <div
+                className={styles.postOption}
+                onClick={() => {
+                  handleClose();
+                  deletePost(post._id);
+                }}
+              >
+                Delete
+              </div>
+            </>
+          )}
+          {user._id != post.userId && (
+            <>
+              <div
+                className={styles.postOption}
+                onClick={editPost}
+                onClick={() => {
+                  handleClose();
+                  post?.hidden ? unhidePost(post._id) : hidePost(post._id);
+                }}
+              >
+                {post?.hidden ? "Unhide" : "Hide"}
+              </div>
+            </>
+          )}
         </div>
       </Popover>
     </div>

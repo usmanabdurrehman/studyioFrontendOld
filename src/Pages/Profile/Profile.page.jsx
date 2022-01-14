@@ -1,4 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import styles from "./Profile.module.scss";
 import { PostCard } from "Containers";
 
@@ -23,14 +29,19 @@ import {
 
 import { getProfileImageURL } from "utils";
 
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 const Profile = (props) => {
   const [profileInfo, setProfileInfo] = useState({
     user: null,
     posts: null,
   });
 
+  const profileWrapperRef = useRef();
+
   const { _id } = useSelector((state) => state.user);
-  const id = props.match.params.id;
+  const id = useMemo(() => props.match.params.id, [props.match]);
 
   const [isLoading, setIsLoading] = useState(null);
 
@@ -39,77 +50,88 @@ const Profile = (props) => {
     imgUrl: "",
   });
 
-  const imageOnChange = (e) => {
-    if (e.target.files[0]) {
-      let imgUrl = URL.createObjectURL(e.target.files[0]);
-      setFields({ ...fields, image: e.target.files[0], imgUrl });
-    }
-  };
+  const imageOnChange = useCallback(
+    (e) => {
+      if (e.target.files[0]) {
+        let imgUrl = URL.createObjectURL(e.target.files[0]);
+        setFields({ ...fields, image: e.target.files[0], imgUrl });
+      }
+    },
+    [setFields]
+  );
 
   const [modalIsOpen, setIsOpen] = useState(false);
 
-  function openModal() {
+  const openModal = useCallback(() => {
     setIsOpen(true);
-  }
+  }, [setIsOpen]);
 
-  function afterOpenModal() {}
-
-  function closeModal() {
+  const closeModal = useCallback(() => {
     setIsOpen(false);
-  }
+  }, [setIsOpen]);
 
   const dispatch = useDispatch();
 
-  const fetchProfileInfo = async () => {
-    console.log("this ran");
+  const fetchProfileInfo = useCallback(async () => {
     const data = await getProfileInfo(id);
     setProfileInfo(data);
     setIsLoading(false);
-  };
+  }, [getProfileInfo, setProfileInfo, setIsLoading]);
 
-  const followHandler = async () => {
+  const followHandler = useCallback(async () => {
     const { status } = await follow(id);
     status &&
       setProfileInfo({
         ...profileInfo,
         user: { ...profileInfo.user, isFollowing: true },
       });
-  };
+  }, [follow, setProfileInfo]);
 
-  const unfollowHandler = async () => {
+  const unfollowHandler = useCallback(async () => {
     const { status } = await unfollow(id);
     status &&
       setProfileInfo({
         ...profileInfo,
         user: { ...profileInfo.user, isFollowing: false },
       });
-  };
+  }, [unfollow, setProfileInfo]);
 
-  const updateProfilePictureHandler = async (e) => {
-    e.preventDefault();
-    const formdata = new FormData();
-    formdata.append("image", fields.image);
-    const { status, user } = await updateProfilePicture(formdata);
-    if (status) {
-      dispatch({ type: "SET_USER", payload: user });
-      setProfileInfo({ ...profileInfo, user: user });
-    }
-  };
+  const updateProfilePictureHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const formdata = new FormData();
+      formdata.append("image", fields.image);
+      const { status, user } = await updateProfilePicture(formdata);
+      if (status) {
+        dispatch({ type: "SET_USER", payload: user });
+        setProfileInfo({ ...profileInfo, user: user });
+      }
+    },
+    [updateProfilePicture, dispatch, setProfileInfo]
+  );
 
   useEffect(() => {
     fetchProfileInfo();
-  }, [id]);
-  console.log("profileInfo", profileInfo);
+    if (profileWrapperRef.current) {
+      profileWrapperRef.current.scrollTo({
+        top: 0,
+      });
+    }
+  }, [fetchProfileInfo, id, profileWrapperRef]);
 
   return (
     <Layout useGutter={false}>
-      <div className={styles.profileWrapper}>
+      <div className={styles.profileWrapper} ref={profileWrapperRef}>
         <div className={styles.profile}>
           <div className={styles.profileImageWrapper}>
-            <img
-              src={getProfileImageURL(profileInfo?.user?.profileImage)}
-              className={styles.profilePic}
-            />
+            {profileInfo?.user?.profileImage ? (
+              <img
+                src={getProfileImageURL(profileInfo?.user?.profileImage)}
+                className={styles.profilePic}
+              />
+            ) : (
+              <Skeleton height={150} width={150} />
+            )}
             <div className={styles.cameraIconWrapper} onClick={openModal}>
               <CameraAltIcon className={styles.cameraIcon} />
             </div>
@@ -173,7 +195,6 @@ const Profile = (props) => {
       )}
       <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
         className={styles.Modal}

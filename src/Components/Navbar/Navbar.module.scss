@@ -23,13 +23,15 @@
 
 .search {
   padding: 10px;
-  border-radius: 0 20px 20px 0;
   border: none;
   width: 300px;
+  transition: 0.3s;
+  border-bottom: 2px solid white;
 }
 
 .search:focus {
   outline: none;
+  border-color: rgb(0, 123, 255);
 }
 
 .notificationWrapper {
@@ -60,13 +62,14 @@
   color: black;
   font-size: 12px;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .nameList > div:hover {
   background: #f4f4f4;
 }
 
-.nameList > div > a {
+.nameList > div {
   color: black;
   display: flex;
   align-items: center;

@@ -1,7 +1,7 @@
-let AlertReducer = (state = { showAlert: false, text: null }, action) => {
+let AlertReducer = (state = { showAlert: false, alertInfo: null }, action) => {
   switch (action.type) {
     case "SHOW_ALERT":
-      return { showAlert: true, text: action.payload };
+      return { showAlert: true, alertInfo: action.payload };
       break;
     case "HIDE_ALERT":
       return { showAlert: false };

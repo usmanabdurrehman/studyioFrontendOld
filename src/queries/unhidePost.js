@@ -1,9 +1,9 @@
 import { service } from "services";
 
-export const likePost = async (postId) => {
+export const unhidePost = async (postId) => {
   const { data } = await service({
-    method: "post",
-    url: "/user/likes",
+    url: "/user/unhidePost",
+    method: "put",
     data: { postId },
   });
   return data;

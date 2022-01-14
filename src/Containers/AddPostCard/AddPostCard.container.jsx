@@ -1,85 +1,156 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { AddPostCard } from "Components";
 
-import axios from "axios";
-import { addPost } from "queries";
+import { addPost, editPost } from "queries";
+import { useDispatch } from "react-redux";
 
-export default function AddPostCardContainer({
-  edit,
-  postContent,
-  fetchFunction,
-  postId,
-}) {
-  const [post, setPost] = useState(edit != true ? "" : postContent);
-  const [files, setFiles] = useState(null);
-  const [images, setImages] = useState(null);
+export default function AddPostCardContainer({ post, fetchFunction }) {
+  const [postText, setPostText] = useState(post ? post.postText : "");
+  const [files, setFiles] = useState(post?.files);
+  const [images, setImages] = useState(post?.images);
 
-  const addPostHandler = async (e) => {
-    e.preventDefault();
+  const dispatch = useDispatch();
 
-    let formdata = new FormData();
-    formdata.append("post", post);
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        formdata.append("attachments", files[i], files[i].name);
+  const addPostHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      let formdata = new FormData();
+      formdata.append("post", postText);
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          formdata.append("attachments", files[i], files[i].name);
+        }
       }
-    }
-    if (images) {
-      for (let i = 0; i < images.length; i++) {
-        formdata.append("images", images[i], images[i].name);
+      if (images) {
+        for (let i = 0; i < images.length; i++) {
+          formdata.append("images", images[i], images[i].name);
+        }
       }
-    }
-    console.log("formdata", formdata);
 
-    const { status } = await addPost(formdata);
-    if (status) {
-      setPost("");
-      setFiles(null);
-      setImages(null);
-      fetchFunction();
-    }
-  };
+      const { status } = await addPost(formdata);
+      if (status) {
+        setPostText("");
+        setFiles(null);
+        setImages(null);
+        fetchFunction();
+      }
+    },
+    [
+      post,
+      postText,
+      files,
+      images,
+      fetchFunction,
+      setFiles,
+      setImages,
+      setPostText,
+    ]
+  );
 
-  const editPostHandler = (e) => {
-    e.preventDefault();
-    axios({
-      url: "/user/posts",
-      method: "put",
-      data: { post, postId },
-      withCredentials: true,
-    }).then(() => {
-      fetchFunction();
-    });
-  };
+  const editPostHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-  const onFileChange = (e) => {
-    console.log(e.target.files);
-    if (e.target.files[0]) {
-      setFiles([...e.target.files]);
-    }
-  };
+      let formdata = new FormData();
+      formdata.append("postId", post._id);
+      formdata.append("post", postText);
+      const oldFiles = files.filter((file) => !!file?.filename);
+      const newFiles = files.filter((file) => !file?.filename);
 
-  const onImageChange = (e) => {
-    console.log(e.target.files);
-    if (e.target.files[0]) {
-      setImages([...e.target.files]);
-    }
-  };
+      formdata.append("oldAttachments", JSON.stringify(oldFiles));
+      if (newFiles.length) {
+        for (let i = 0; i < newFiles.length; i++) {
+          formdata.append("attachments", newFiles[i], newFiles[i].name);
+        }
+      }
 
-  console.log(files, images);
+      const oldImages = images.filter((image) => !image?.name);
+      const newImages = images.filter((image) => !!image?.name);
 
-  const onTextChange = (newValue, editor) => setPost(newValue);
+      formdata.append("oldImages", JSON.stringify(oldImages));
+      if (newImages.length) {
+        for (let i = 0; i < newImages.length; i++) {
+          formdata.append("images", newImages[i], newImages[i].name);
+        }
+      }
+
+      const { status } = await editPost(formdata);
+      if (status) {
+        setPostText("");
+        setFiles(null);
+        setImages(null);
+        fetchFunction();
+        dispatch({ type: "HIDE_MODAL" });
+      }
+    },
+    [
+      post,
+      postText,
+      files,
+      images,
+      fetchFunction,
+      setFiles,
+      setImages,
+      setPostText,
+    ]
+  );
+
+  const onFileChange = useCallback(
+    (e) => {
+      if (e.target.files[0]) {
+        setFiles((files) => [...(files || []), ...e.target.files]);
+      }
+    },
+    [setFiles]
+  );
+
+  const onImageChange = useCallback(
+    (e) => {
+      if (e.target.files[0]) {
+        console.log([...e.target.files]);
+        setImages((images) => [...(images || []), ...e.target.files]);
+      }
+    },
+    [setImages]
+  );
+
+  const onCloseImageClick = useCallback(
+    (name) => {
+      console.log("yooo", name, images);
+      setImages((images) =>
+        images.filter((image) => (image?.name || image) != name)
+      );
+    },
+    [setImages]
+  );
+
+  const onCloseFileClick = useCallback(
+    (name) => {
+      setFiles((files) =>
+        files.filter((file) => (file?.name || file?.filename) != name)
+      );
+    },
+    [setFiles]
+  );
+
+  const onTextChange = useCallback(
+    (newValue) => setPostText(newValue),
+    [setPostText]
+  );
   return (
     <AddPostCard
-      edit={edit}
+      post={post}
       addPost={addPostHandler}
       editPost={editPostHandler}
-      post={post}
+      postText={postText}
       files={files}
       images={images}
       onFileChange={onFileChange}
       onImageChange={onImageChange}
       onTextChange={onTextChange}
+      onCloseImageClick={onCloseImageClick}
+      onCloseFileClick={onCloseFileClick}
     />
   );
 }

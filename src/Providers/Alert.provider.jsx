@@ -7,12 +7,11 @@ export default function AlertProvider({ children }) {
   const alert = useSelector((state) => state.alert);
   const { addToast } = useToasts();
   const dispatch = useDispatch();
-
   useEffect(() => {
     alert.showAlert &&
-      alert.text &&
-      addToast(alert.text, {
-        appearance: "error",
+      alert.alertInfo &&
+      addToast(alert.alertInfo.msg, {
+        appearance: alert.alertInfo.type,
         autoDismiss: true,
         onDismiss: () => dispatch({ type: "HIDE_ALERT" }),
       });

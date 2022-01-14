@@ -1,31 +1,41 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
 
 import { Signin, Signup, Timeline, Profile, Post } from "Pages";
 
-import store from "./store";
-import { Provider } from "react-redux";
-
-import { AlertProvider } from "Providers";
+import { AlertProvider, ModalProvider } from "Providers";
 import { ToastProvider } from "react-toast-notifications";
 
+import { PublicRoute, PrivateRoute } from "Routes";
+
+import { useSelector } from "react-redux";
+
 const App = () => {
+  const isAuth = useSelector((state) => state.user) ? true : false;
+
   return (
     <div id="App">
-      <Provider store={store}>
-        <ToastProvider>
-          <AlertProvider>
+      <ToastProvider>
+        <AlertProvider>
+          <ModalProvider>
             <Router>
-              <Route exact path="/" component={Signin} />
-              <Route path="/signup" component={Signup} />
-              <PrivateRoute path="/timeline" component={Timeline} />
-              <PrivateRoute path="/profile/:id" component={Profile} />
-              <PrivateRoute path="/post/:id" component={Post} />
+              <PublicRoute exact path="/" component={Signin} isAuth={isAuth} />
+              <PublicRoute path="/signup" component={Signup} isAuth={isAuth} />
+              <PrivateRoute
+                path="/timeline"
+                component={Timeline}
+                isAuth={isAuth}
+              />
+              <PrivateRoute
+                path="/profile/:id"
+                component={Profile}
+                isAuth={isAuth}
+              />
+              <PrivateRoute path="/post/:id" component={Post} isAuth={isAuth} />
             </Router>
-          </AlertProvider>
-        </ToastProvider>
-      </Provider>
+          </ModalProvider>
+        </AlertProvider>
+      </ToastProvider>
     </div>
   );
 };

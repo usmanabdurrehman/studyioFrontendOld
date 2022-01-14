@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Navbar } from "Components";
 
 import { useHistory } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   fetchNames,
@@ -15,6 +15,7 @@ import {
 
 export default function NavbarContainer() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
   const socket = useSelector((state) => state.socket);
@@ -25,14 +26,17 @@ export default function NavbarContainer() {
   const [unseenNotificationCount, setUnseenNotificationCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const getNotificationCount = async () => {
+  const getNotificationCount = useCallback(async () => {
     const data = await getUnseenNotificationsCount();
     data && setUnseenNotificationCount(data.notificationCount);
-  };
+  }, [getUnseenNotificationsCount, setUnseenNotificationCount]);
 
-  const unshowNotifications = () => setShowNotifications(false);
+  const unshowNotifications = useCallback(
+    () => setShowNotifications(false),
+    [setShowNotifications]
+  );
 
-  const handleNotificationClick = async () => {
+  const handleNotificationClick = useCallback(async () => {
     const { status } = await seeNotifications();
     if (status) {
       setUnseenNotificationCount(0);
@@ -42,31 +46,49 @@ export default function NavbarContainer() {
         setNotifications(data);
       }
     }
-  };
+  }, [
+    seeNotifications,
+    getNotifications,
+    setUnseenNotificationCount,
+    setShowNotifications,
+    setNotifications,
+  ]);
 
-  let fetchNamesHandler = async (name) => {
-    const data = await fetchNames(name);
-    data && setSearchNames(data);
-  };
+  let fetchNamesHandler = useCallback(
+    async (name) => {
+      const data = await fetchNames(name);
+      data && setSearchNames(data);
+    },
+    [fetchNames, setSearchNames]
+  );
 
-  let logoutHandler = async () => {
+  let logoutHandler = useCallback(async () => {
     const { status } = await logout();
+    dispatch({ type: "LOGOUT" });
     status && history.push("/");
-  };
+  }, [logout, dispatch, history]);
 
-  const showNamesList = () => setShowNames(true);
-  const hideNamesList = () => setShowNames(false);
-  const onSearchChange = (e) => fetchNamesHandler(e.target.value);
+  const showNamesList = useCallback(() => setShowNames(true), [setShowNames]);
+  const hideNamesList = useCallback(() => setShowNames(false), [setShowNames]);
+  const onSearchChange = useCallback(
+    (e) => fetchNamesHandler(e.target.value),
+    [fetchNamesHandler]
+  );
+
+  const removeSearchResults = useCallback(() => {
+    setSearchNames(null);
+    setShowNames(false);
+  }, [setShowNames, setSearchNames]);
 
   useEffect(() => {
     getNotificationCount();
     socket.on("changes", (data) => {
-      console.log("Yo boi");
       setUnseenNotificationCount(
         (unseenNotificationCount) => unseenNotificationCount + 1
       );
     });
-  }, []);
+  }, [getNotificationCount, setUnseenNotificationCount]);
+
   return (
     <Navbar
       user={user}
@@ -78,7 +100,7 @@ export default function NavbarContainer() {
       logout={logoutHandler}
       handleNotificationClick={handleNotificationClick}
       showNamesList={showNamesList}
-      hideNamesList={hideNamesList}
+      removeSearchResults={removeSearchResults}
       onSearchChange={onSearchChange}
       unshowNotifications={unshowNotifications}
     />

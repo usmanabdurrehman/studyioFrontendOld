@@ -22,3 +22,5 @@ export { default as Chat } from "./Chat/Chat.component";
 export { default as PostCardSkeleton } from "./PostCardSkeleton/PostCardSkeleton.component";
 
 export { default as Comment } from "./Comment/Comment.component";
+
+export { default as Modal } from "./Modal/Modal.component";

@@ -8,9 +8,9 @@ const instance = axios.create({
 
 instance.interceptors.response.use(
   function (response) {
-    const { status, auth, msg } = response.data;
-    if (!(status || auth)) {
-      store.dispatch({ type: "SHOW_ALERT", payload: msg });
+    const { alert } = response.data;
+    if (alert) {
+      store.dispatch({ type: "SHOW_ALERT", payload: alert });
     }
     return response;
   },

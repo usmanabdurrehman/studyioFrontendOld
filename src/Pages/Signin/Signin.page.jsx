@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
@@ -36,15 +36,17 @@ const SignIn = (props) => {
     rememberMe: false,
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { auth, user, token } = await signin(fields);
-    if (auth) {
-      dispatch({ type: "SET_USER", payload: user });
-      localStorage.setItem("token", token);
-      props.history.push("/timeline");
-    }
-  };
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const { auth, user, token } = await signin(fields);
+      if (auth) {
+        dispatch({ type: "SET_USER", payload: user });
+        props.history.push("/timeline");
+      }
+    },
+    [signin, dispatch, props.history]
+  );
 
   return (
     <div className={styles.grid}>
@@ -56,6 +58,7 @@ const SignIn = (props) => {
             <TextField
               name="username"
               label="Email"
+              type="email"
               className={styles.input}
               InputLabelProps={{
                 classes: {
@@ -74,6 +77,7 @@ const SignIn = (props) => {
             <TextField
               name="password"
               label="Password"
+              type="password"
               className={styles.input}
               InputLabelProps={{
                 classes: {

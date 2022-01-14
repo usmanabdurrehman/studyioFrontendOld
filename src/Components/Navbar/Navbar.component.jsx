@@ -3,7 +3,7 @@ import styles from "./Navbar.module.scss";
 
 import { Container } from "../";
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import ClickAwayListener from "react-click-away-listener";
 
@@ -12,8 +12,6 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import { Badge } from "../";
-
-import { useHistory } from "react-router-dom";
 
 import { getProfileImageURL, classNames } from "utils";
 
@@ -29,7 +27,7 @@ export default function Navbar({
   logout,
   handleNotificationClick,
   showNamesList,
-  hideNamesList,
+  removeSearchResults,
   onSearchChange,
   unshowNotifications,
 }) {
@@ -43,7 +41,7 @@ export default function Navbar({
               Study.io
             </Link>
           </h2>
-          <ClickAwayListener onClickAway={hideNamesList}>
+          <ClickAwayListener onClickAway={removeSearchResults}>
             <div className={styles.searchWrapper}>
               <SearchIcon className={styles.icon} />
               <input
@@ -55,15 +53,18 @@ export default function Navbar({
               {searchNames && showNames && (
                 <div className={styles.nameList}>
                   {searchNames.map(({ name, _id, profileImage }) => (
-                    <div>
-                      <Link to={`/profile/${_id}`}>
-                        <img
-                          src={getProfileImageURL(profileImage)}
-                          alt=""
-                          className={styles.searchImage}
-                        />
-                        <div className={styles.searchName}>{name}</div>
-                      </Link>
+                    <div
+                      onClick={() => {
+                        removeSearchResults();
+                        history.push(`/profile/${_id}`);
+                      }}
+                    >
+                      <img
+                        src={getProfileImageURL(profileImage)}
+                        alt=""
+                        className={styles.searchImage}
+                      />
+                      <div className={styles.searchName}>{name}</div>
                     </div>
                   ))}
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { Layout } from "Layouts";
 import { PostCardSkeleton } from "Components";
@@ -10,14 +10,14 @@ export default function PostPage(props) {
   const [post, setPost] = useState(null);
   const id = props.match.params.id;
 
-  const getPostHandler = async () => {
+  const getPostHandler = useCallback(async () => {
     const data = await getPostById(id);
     setPost(data);
-  };
+  }, [getPostById, setPost]);
 
   useEffect(() => {
     getPostHandler();
-  }, []);
+  }, [getPostHandler]);
 
   return (
     <Layout>

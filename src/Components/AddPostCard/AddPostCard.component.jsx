@@ -10,21 +10,27 @@ import { FileIcon, defaultStyles } from "react-file-icon";
 
 import ImageIcon from "@material-ui/icons/Image";
 
+import { getFileURL } from "utils";
+
+import CancelIcon from "@material-ui/icons/Cancel";
+
 const AddPostCard = ({
-  edit,
+  post,
+  postText,
   addPost,
   editPost,
-  post,
   files,
   images,
   onFileChange,
   onTextChange,
   onImageChange,
+  onCloseImageClick,
+  onCloseFileClick,
 }) => {
   return (
     <div className={styles.card}>
       <div className={styles.cardHeader}>
-        <div>{edit != true ? "New Post" : "Edit Post"}</div>
+        <div>{post ? "Edit Post" : "New Post"}</div>
         <div className={styles.iconsWrapper}>
           <div className={styles.profileImageWrapper}>
             <div className={styles.fileWrapper}>
@@ -56,7 +62,7 @@ const AddPostCard = ({
         </div>
       </div>
       <div className={styles.cardBody}>
-        <form onSubmit={edit != true ? addPost : editPost}>
+        <form onSubmit={post ? editPost : addPost}>
           <div>
             <Editor
               className={styles.textarea}
@@ -68,27 +74,50 @@ const AddPostCard = ({
                 menubar: false,
                 resize: false,
               }}
-              value={post}
+              value={postText}
               onEditorChange={onTextChange}
             />
           </div>
           {files && (
             <div className={styles.fileContainer}>
-              {files.map((file) => (
-                <div className={styles.fileIcon}>
-                  <FileIcon
-                    extension={file.type.split("/")[1]}
-                    {...defaultStyles[file.type.split("/")[1]]}
-                  />
-                </div>
-              ))}
+              {files.map((file) => {
+                const isUploadedFile = file?.filename;
+                const extensionArr = (
+                  isUploadedFile ? file?.filename : file.type
+                ).split(isUploadedFile ? "." : "/");
+                const extension = extensionArr[extensionArr.length - 1];
+                return (
+                  <div className={styles.fileIcon}>
+                    <FileIcon
+                      extension={extension}
+                      {...defaultStyles[extension]}
+                    />
+                    <CancelIcon
+                      className={styles.removeFileIcon}
+                      onClick={() =>
+                        onCloseFileClick(file?.name || file?.filename)
+                      }
+                    />
+                  </div>
+                );
+              })}
             </div>
           )}
           {images && (
             <div className={styles.postImagesWrapper}>
               {images.map((image) => (
-                <div>
-                  <img src={URL.createObjectURL(image)} />
+                <div className={styles.imageWrapper}>
+                  <img
+                    src={
+                      typeof image == "string"
+                        ? getFileURL(image)
+                        : URL.createObjectURL(image)
+                    }
+                  />
+                  <CancelIcon
+                    className={styles.removeIcon}
+                    onClick={() => onCloseImageClick(image?.name || image)}
+                  />
                 </div>
               ))}
             </div>
@@ -100,7 +129,7 @@ const AddPostCard = ({
               variant="filled"
               classes={{ button: styles.addButton }}
             >
-              {edit != true ? "Add Post" : "Update"}
+              {post ? "Update" : "Add Post"}
             </Button>
           </div>
         </form>

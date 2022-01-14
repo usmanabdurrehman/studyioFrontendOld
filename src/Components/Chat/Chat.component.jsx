@@ -20,6 +20,8 @@ export default function Chat() {
   const { _id } = user;
   let [messages, setMessages] = useState([]);
 
+  const [searchString, setSearchString] = useState("");
+
   const [searchNames, setSearchNames] = useState(null);
   const [conversations, setConversations] = useState(null);
   let fetchNamesHandler = async (name) => {
@@ -35,6 +37,7 @@ export default function Chat() {
 
   const onSearchChange = (e) => {
     const value = e.target.value;
+    setSearchString(value);
     value ? fetchNamesHandler(e.target.value) : setSearchNames(null);
   };
 
@@ -66,7 +69,6 @@ export default function Chat() {
       url: `/user/conversations/${id}`,
     }).then((res) => {
       const { status, conversation } = res.data;
-      console.log(conversation);
       if (status) {
         setOpenedChat(conversation);
         setMessages(conversation.messages);
@@ -86,6 +88,10 @@ export default function Chat() {
 
   useEffect(() => {
     !index && getAllConversations();
+    if (index) {
+      setSearchString("");
+      setSearchNames(null);
+    }
   }, [index]);
 
   const sendMessage = (e) => {
@@ -95,8 +101,6 @@ export default function Chat() {
 
   useEffect(() => {
     socket.on("message_change", (message) => {
-      console.log(message);
-      console.log(_id);
       setMessage("");
       setMessages((messages) => [...messages, message]);
     });
@@ -104,7 +108,6 @@ export default function Chat() {
 
   useEffect(() => {
     if (openedChat) {
-      console.log("join room lmao");
       lastOpenedChat.current &&
         socket.emit("leaveRoom", { id: lastOpenedChat.current._id });
       socket.emit("joinRoom", { id: openedChat._id });
@@ -126,15 +129,10 @@ export default function Chat() {
     <div className={styles.chat}>
       <div className={styles.chatHeader}>
         {index ? openedChatMember.name : "Inbox"}
-        {index ? (
+        {index == 1 && (
           <ArrowBackIosIcon
             className={styles.arrowBackward}
             onClick={(e) => setIndex(0)}
-          />
-        ) : (
-          <ArrowForwardIosIcon
-            className={styles.arrowForward}
-            onClick={(e) => setIndex(1)}
           />
         )}
       </div>
@@ -143,45 +141,25 @@ export default function Chat() {
         style={{ height: "100%" }}
         containerStyle={{ height: "100%" }}
       >
-        <div>
-          <div className={styles.searchWrapper}>
-            <input
-              placeholder="Search..."
-              className={styles.search}
-              onChange={onSearchChange}
-            />
-            {conversations && (
-              <div className={styles.nameList}>
-                {conversations.map((conversation) => {
-                  const {
-                    _id: id,
-                    name,
-                    profileImage,
-                  } = conversation.participants.find(
-                    (participant) => participant._id !== _id
-                  );
-                  return (
-                    <div onClick={() => openConversation(conversation._id)}>
-                      <img
-                        src={getProfileImageURL(profileImage)}
-                        alt=""
-                        className={styles.searchImage}
-                      />
-                      <div className={styles.searchName}>{name}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            {searchNames && (
-              <div className={styles.nameList}>
-                <h5 className={styles.searchNamesHeader}>More People</h5>
-                {searchNames.map(({ name, _id, profileImage }) => (
-                  <div
-                    onClick={() =>
-                      startConversation({ _id, name, profileImage })
-                    }
-                  >
+        <div className={styles.searchWrapper}>
+          <input
+            placeholder="Search..."
+            value={searchString}
+            className={styles.search}
+            onChange={onSearchChange}
+          />
+          {conversations && conversations?.length ? (
+            <div className={styles.nameList}>
+              {conversations.map((conversation) => {
+                const {
+                  _id: id,
+                  name,
+                  profileImage,
+                } = conversation.participants.find(
+                  (participant) => participant._id !== _id
+                );
+                return (
+                  <div onClick={() => openConversation(conversation._id)}>
                     <img
                       src={getProfileImageURL(profileImage)}
                       alt=""
@@ -189,10 +167,35 @@ export default function Chat() {
                     />
                     <div className={styles.searchName}>{name}</div>
                   </div>
-                ))}
+                );
+              })}
+            </div>
+          ) : (
+            !searchNames?.length && (
+              <div className={styles.noConversationWrapper}>
+                Sorry, you have not got any conversation yet.
               </div>
-            )}
-          </div>
+            )
+          )}
+          {searchNames && (
+            <div className={styles.nameList}>
+              {conversations && conversations.length > 0 && (
+                <h5 className={styles.searchNamesHeader}>More People</h5>
+              )}
+              {searchNames.map(({ name, _id, profileImage }) => (
+                <div
+                  onClick={() => startConversation({ _id, name, profileImage })}
+                >
+                  <img
+                    src={getProfileImageURL(profileImage)}
+                    alt=""
+                    className={styles.searchImage}
+                  />
+                  <div className={styles.searchName}>{name}</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className={styles.chatWrapper}>
           <div className={styles.chatMessages} ref={messagesContainer}>

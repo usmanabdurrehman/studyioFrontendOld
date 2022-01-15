@@ -24,3 +24,8 @@ export { default as PostCardSkeleton } from "./PostCardSkeleton/PostCardSkeleton
 export { default as Comment } from "./Comment/Comment.component";
 
 export { default as Modal } from "./Modal/Modal.component";
+
+export { default as Profile } from "./Profile/Profile.component";
+export { default as SignIn } from "./SignIn/SignIn.component";
+export { default as Signup } from "./Signup/Signup.component";
+export { default as Timeline } from "./Timeline/Timeline.component";

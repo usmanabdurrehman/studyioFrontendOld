@@ -20,7 +20,7 @@ const Layout = memo(({ children, useGutter = true }) => {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    const socketInstance = socketClient('http://localhost:7000/', {
+    const socketInstance = socketClient(process.env.REACT_APP_BACKEND_BASEURL, {
       withCredentials: true,
     });
     socketInstance.emit('joinRoom', { id: user._id });

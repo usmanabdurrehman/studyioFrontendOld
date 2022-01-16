@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { Link, useHistory } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { Badge, Container } from '..';
 import styles from './Navbar.module.scss';
 
-export default function Navbar({
+const Navbar = memo(({
   user: { _id, profileImage },
   searchNames,
   showNames,
@@ -27,7 +27,7 @@ export default function Navbar({
   removeSearchResults,
   onSearchChange,
   unshowNotifications,
-}) {
+}) => {
   const history = useHistory();
   return (
     <div className={styles.navbar}>
@@ -147,4 +147,6 @@ export default function Navbar({
       </Container>
     </div>
   );
-}
+});
+
+export default Navbar;

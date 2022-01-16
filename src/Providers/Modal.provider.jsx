@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Modal } from 'Components';
 
-export default function ModalProvider({ children }) {
+const ModalProvider = memo(({ children }) => {
   const modal = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const closeModal = () => dispatch({ type: 'HIDE_MODAL' });
@@ -13,4 +13,6 @@ export default function ModalProvider({ children }) {
       {children}
     </div>
   );
-}
+});
+
+export default ModalProvider;

@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useRef, useMemo, memo,
+} from 'react';
 import service from 'services';
 
 import { useSelector } from 'react-redux';
 
 import { Chat } from 'Components';
 
-export default function ChatContainer() {
+const ChatContainer = memo(() => {
   const socket = useSelector((state) => state.socket);
   const user = useSelector((state) => state.user);
   const { _id: userId } = user;
@@ -15,6 +17,20 @@ export default function ChatContainer() {
 
   const [searchNames, setSearchNames] = useState(null);
   const [conversations, setConversations] = useState(null);
+
+  const [index, setIndex] = useState(0);
+
+  const [message, setMessage] = useState('');
+  const [openedChat, setOpenedChat] = useState(null);
+  const lastOpenedChat = useRef();
+
+  const openedChatMember = useMemo(
+    () => openedChat?.participants?.find(
+      (participant) => participant._id !== userId,
+    ),
+    [openedChat, userId],
+  );
+
   const fetchNamesHandler = async (name) => {
     service({
       method: 'post',
@@ -31,16 +47,6 @@ export default function ChatContainer() {
     setSearchString(value);
     value ? fetchNamesHandler(e.target.value) : setSearchNames(null);
   };
-
-  const [index, setIndex] = useState(0);
-
-  const [message, setMessage] = useState('');
-  const [openedChat, setOpenedChat] = useState(null);
-  const lastOpenedChat = useRef();
-
-  const openedChatMember = openedChat?.participants?.find(
-    (participant) => participant._id !== userId,
-  );
 
   const openConversation = (id) => {
     service({
@@ -99,7 +105,7 @@ export default function ChatContainer() {
   useEffect(() => {
     socket.on('message_change', (newMessage) => {
       setMessage('');
-      setMessages((allMessages) => [...allMessages, newMessage]);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
   }, [socket]);
 
@@ -131,4 +137,6 @@ export default function ChatContainer() {
       onMessageChange={onMessageChange}
     />
   );
-}
+});
+
+export default ChatContainer;

@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { AddPostCard } from 'Components';
 
 import { addPost, editPost } from 'queries';
 import { useDispatch } from 'react-redux';
 
-export default function AddPostCardContainer({ post, fetchFunction }) {
+const AddPostCardContainer = memo(({ post, fetchFunction }) => {
   const [postText, setPostText] = useState(post ? post.postText : '');
   const [files, setFiles] = useState(post?.files);
   const [images, setImages] = useState(post?.images);
@@ -147,4 +147,6 @@ export default function AddPostCardContainer({ post, fetchFunction }) {
       onCloseFileClick={onCloseFileClick}
     />
   );
-}
+});
+
+export default AddPostCardContainer;

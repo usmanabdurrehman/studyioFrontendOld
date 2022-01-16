@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Footer, Container, FAB } from 'Components';
 import { Chat, Navbar } from 'Containers';
 
@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import socketClient from 'socket.io-client';
 import styles from './Layout.module.scss';
 
-export default function Layout({ children, useGutter = true }) {
+const Layout = memo(({ children, useGutter = true }) => {
   const [showChat, setShowChat] = useState(false);
   const socket = useSelector((state) => state.socket);
   const dispatch = useDispatch();
@@ -61,4 +61,6 @@ export default function Layout({ children, useGutter = true }) {
       </div>
     )
   );
-}
+});
+
+export default Layout;

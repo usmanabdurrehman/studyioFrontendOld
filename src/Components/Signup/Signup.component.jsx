@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Signup({
+const Signup = memo(({
   handleClickShowPassword,
   handleMouseDownPassword,
   showPassword,
@@ -43,7 +43,7 @@ function Signup({
   imageOnChange,
   fields,
   onChange,
-}) {
+}) => {
   const classes = useStyles();
   return (
     <div className={styles.grid}>
@@ -157,6 +157,6 @@ function Signup({
       <div className={styles.formImage} />
     </div>
   );
-}
+});
 
 export default Signup;

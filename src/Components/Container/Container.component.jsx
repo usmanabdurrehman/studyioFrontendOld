@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { classNames } from 'utils';
 
@@ -7,12 +7,12 @@ import styles from './Container.module.scss';
 
 // Have to convert these inline styles to classes
 
-export default function Container({
+const Container = memo(({
   children,
   classes,
   maxWidth,
   disableGutters,
-}) {
+}) => {
   const maxWidthMapper = (maxWidthToMap) => {
     const maxWidthMap = {
       xs: 0,
@@ -38,7 +38,9 @@ export default function Container({
       {children}
     </div>
   );
-}
+});
+
+export default Container;
 
 Container.propTypes = {
   maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),

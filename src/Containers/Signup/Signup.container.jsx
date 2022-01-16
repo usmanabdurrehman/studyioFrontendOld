@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 
 import { signup } from 'queries';
 
 import { Signup } from 'Components';
 
-function SignupContainer({ navigateToSignin }) {
+const SignupContainer = memo(({ navigateToSignin }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [fields, setFields] = useState({
@@ -62,6 +62,6 @@ function SignupContainer({ navigateToSignin }) {
       fields={fields}
     />
   );
-}
+});
 
 export default SignupContainer;

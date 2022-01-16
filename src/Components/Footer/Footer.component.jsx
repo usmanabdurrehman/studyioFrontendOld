@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './Footer.module.scss';
 
-export default function Footer() {
-  return <div className={styles.footer}>Study.io, Copyright 2021</div>;
-}
+const Footer = memo(() => <div className={styles.footer}>Study.io, Copyright 2021</div>);
+
+export default Footer;

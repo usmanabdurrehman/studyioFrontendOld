@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
@@ -13,7 +13,7 @@ import { classNames, getProfileImageURL, getFileURL } from 'utils';
 import { useSelector } from 'react-redux';
 import styles from './PostCard.module.scss';
 
-export default function PostCard({
+const PostCard = memo(({
   post,
   likePost,
   unlikePost,
@@ -26,7 +26,7 @@ export default function PostCard({
   editPost,
   hidePost,
   unhidePost,
-}) {
+}) => {
   const user = useSelector((state) => state.user);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -221,4 +221,6 @@ export default function PostCard({
       </Popover>
     </div>
   );
-}
+});
+
+export default PostCard;

@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, memo,
+} from 'react';
 
 import { PostCardSkeleton } from 'Components';
 import { PostCard } from 'Containers';
 
 import { getPostById } from 'queries';
 
-export default function PostFetch({ id }) {
+const PostFetch = memo(({ id }) => {
   const [post, setPost] = useState(null);
 
   const getPostHandler = useCallback(async () => {
@@ -22,4 +24,6 @@ export default function PostFetch({ id }) {
   ) : (
     <PostCardSkeleton />
   );
-}
+});
+
+export default PostFetch;

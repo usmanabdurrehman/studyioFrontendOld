@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { PostCardSkeleton } from 'Components';
 
 import { AddPostCard, PostCard } from 'Containers';
 import styles from './Timeline.module.scss';
 
-function Timeline({ fetchTimelinePosts, techNews, posts }) {
+const Timeline = memo(({ fetchTimelinePosts, techNews, posts }) => {
   const postContent = () => {
     if (posts) {
       if (posts.length === 0) {
@@ -47,6 +47,6 @@ function Timeline({ fetchTimelinePosts, techNews, posts }) {
       </div>
     </div>
   );
-}
+});
 
 export default Timeline;

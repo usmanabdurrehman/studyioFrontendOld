@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, memo } from 'react';
 
 import { PostCard } from 'Containers';
 
@@ -16,7 +16,7 @@ import Skeleton from 'react-loading-skeleton';
 import styles from './Profile.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-function Profile({
+const Profile = memo(({
   profileInfo,
   follow,
   unfollow,
@@ -29,7 +29,7 @@ function Profile({
   userId,
   id,
   fetchProfileInfo,
-}) {
+}) => {
   const profileWrapperRef = useRef();
 
   useEffect(() => {
@@ -156,6 +156,6 @@ function Profile({
       </div>
     </div>
   );
-}
+});
 
 export default Profile;

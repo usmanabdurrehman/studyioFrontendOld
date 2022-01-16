@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo } from 'react';
 
 import SwipeableViews from 'react-swipeable-views';
 
@@ -8,7 +8,7 @@ import { getProfileImageURL } from 'utils';
 
 import styles from './Chat.module.scss';
 
-export default function Chat({
+const Chat = memo(({
   index,
   messages,
   message,
@@ -24,7 +24,7 @@ export default function Chat({
   userId,
   goBackToChatList,
   onMessageChange,
-}) {
+}) => {
   const messagesContainer = useRef(null);
 
   useEffect(() => {
@@ -140,4 +140,6 @@ export default function Chat({
       </SwipeableViews>
     </div>
   );
-}
+});
+
+export default Chat;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import ReactModal from 'react-modal';
 
 import { Button } from 'Components';
@@ -6,7 +6,7 @@ import { Button } from 'Components';
 import { classNames } from 'utils';
 import styles from './Modal.module.css';
 
-export default function Modal({ modal, closeModal }) {
+const Modal = memo(({ modal, closeModal }) => {
   const { text, buttons, onConfirm } = modal?.modalInfo || {};
 
   return (
@@ -52,4 +52,6 @@ export default function Modal({ modal, closeModal }) {
       )}
     </ReactModal>
   );
-}
+});
+
+export default Modal;

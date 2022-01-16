@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, memo,
+} from 'react';
 
 import { getTimelinePosts, getTechNews } from 'queries';
 
 import { Timeline } from 'Components';
 
-function TimelineContainer() {
+const TimelineContainer = memo(() => {
   const [posts, setPosts] = useState(null);
 
   const [techNews, setTechNews] = useState([]);
@@ -31,6 +33,6 @@ function TimelineContainer() {
       posts={posts}
     />
   );
-}
+});
 
 export default TimelineContainer;

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import { TextField, Checkbox } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-import { Button, Checkbox } from 'Components';
+import { Button } from 'Components';
 import styles from './SignIn.module.scss';
 
 const useStyles = makeStyles(() => ({
@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function SignIn({ handleSubmit, onChange, fields }) {
+const SignIn = memo(({ handleSubmit, onChange, fields }) => {
   const classes = useStyles();
 
   return (
@@ -63,12 +63,11 @@ function SignIn({ handleSubmit, onChange, fields }) {
             />
             <div className={styles.checkboxWrapper}>
               <Checkbox
+                name="rememberMe"
                 checked={fields.rememberMe}
                 onChange={onChange}
                 className={styles.checkbox}
-                inputProps={{
-                  'aria-label': 'checkbox with default color',
-                }}
+                color="primary"
               />
               <p className={styles.checkboxDescription}>Remember me</p>
             </div>
@@ -89,6 +88,6 @@ function SignIn({ handleSubmit, onChange, fields }) {
       </div>
     </div>
   );
-}
+});
 
 export default SignIn;

@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, memo,
+} from 'react';
 import { Navbar } from 'Components';
 
 import { useHistory } from 'react-router-dom';
@@ -13,7 +15,7 @@ import {
   getNotifications,
 } from 'queries';
 
-export default function NavbarContainer() {
+const NavbarContainer = memo(() => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -101,4 +103,6 @@ export default function NavbarContainer() {
       unshowNotifications={unshowNotifications}
     />
   );
-}
+});
+
+export default NavbarContainer;

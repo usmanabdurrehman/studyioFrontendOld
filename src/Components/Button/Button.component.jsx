@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import PropTypes from 'prop-types';
 
 import { classNames, typeToColorMapping } from 'utils';
 import styles from './Button.module.scss';
 
-export default function Button({
+const Button = memo(({
   className,
   children,
   color,
@@ -15,7 +15,7 @@ export default function Button({
   classes,
   onClick,
   ...rest
-}) {
+}) => {
   const typeToSizeMapper = (sizeToMap) => {
     const typeToSizeMap = {
       small: styles.buttonSmall,
@@ -43,7 +43,9 @@ export default function Button({
       {children}
     </button>
   );
-}
+});
+
+export default Button;
 
 Button.propTypes = {
   color: PropTypes.oneOf([

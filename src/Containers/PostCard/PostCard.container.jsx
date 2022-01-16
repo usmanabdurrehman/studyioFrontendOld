@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 
 import {
   likePost,
@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 
 import { AddPostCard } from 'Containers';
 
-export default function PostCardContainer({ post, fetchFunction }) {
+const PostCardContainer = memo(({ post, fetchFunction }) => {
   const [comment, setComment] = useState('');
   const [showMore, setShowMore] = useState(false);
 
@@ -128,4 +128,6 @@ export default function PostCardContainer({ post, fetchFunction }) {
       showMore={showMore}
     />
   );
-}
+});
+
+export default PostCardContainer;

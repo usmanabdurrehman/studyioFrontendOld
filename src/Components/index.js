@@ -4,16 +4,13 @@ export { default as AddPostCard } from './AddPostCard/AddPostCard.component';
 export { default as Navbar } from './Navbar/Navbar.component';
 export { default as Footer } from './Footer/Footer.component';
 
-export { default as Switch } from './Switch/Switch.component';
 export { default as Button } from './Button/Button.component';
-export { default as Checkbox } from './Checkbox/Checkbox.component';
 
 export { default as FAB } from './FAB/FAB.component';
 
 export { default as Container } from './Container/Container.component';
 
 export { default as Badge } from './Badge/Badge.component';
-export { default as Alert } from './Alert/Alert.component';
 
 export { default as Chat } from './Chat/Chat.component';
 

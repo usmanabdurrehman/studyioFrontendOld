@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useCallback,
+  useState, useEffect, useCallback, memo,
 } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,7 +13,7 @@ import {
 
 import { Profile } from 'Components';
 
-function ProfileContainer({ id }) {
+const ProfileContainer = memo(({ id }) => {
   const [profileInfo, setProfileInfo] = useState({
     user: null,
     posts: null,
@@ -30,10 +30,14 @@ function ProfileContainer({ id }) {
     (e) => {
       if (e.target.files[0]) {
         const imgUrl = URL.createObjectURL(e.target.files[0]);
-        setFields({ ...fields, image: e.target.files[0], imgUrl });
+        setFields((prevFields) => ({
+          ...prevFields,
+          image: e.target.files[0],
+          imgUrl,
+        }));
       }
     },
-    [fields, setFields],
+    [setFields],
   );
 
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -105,6 +109,6 @@ function ProfileContainer({ id }) {
       fetchProfileInfo={fetchProfileInfo}
     />
   );
-}
+});
 
 export default ProfileContainer;

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import PropTypes from 'prop-types';
 
 import { typeToColorMapping, classNames } from 'utils';
 import styles from './Badge.module.scss';
 
-export default function Badge({
+const Badge = memo(({
   color,
   number,
   max,
@@ -13,7 +13,7 @@ export default function Badge({
   showZero,
   classes,
   children,
-}) {
+}) => {
   if (typeof number === 'undefined') {
     throw new Error('A number must be supplied for displaying the badge');
   }
@@ -34,7 +34,9 @@ export default function Badge({
       <div className={styles.badgeContent}>{children}</div>
     </div>
   );
-}
+});
+
+export default Badge;
 
 Badge.propTypes = {
   color: PropTypes.oneOf([

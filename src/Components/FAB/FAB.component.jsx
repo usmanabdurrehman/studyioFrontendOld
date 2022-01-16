@@ -1,34 +1,33 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import PropTypes from 'prop-types';
 
 import { classNames, typeToColorMapping } from 'utils';
 import styles from './FAB.module.scss';
 
-export default function FAB({
+const FAB = memo(({
   children,
   color,
   variant,
   disabled,
   classes,
   onClick,
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={classNames({
-        [styles.button]: true,
-        [typeToColorMapping({ color, variant })]: true,
-        [styles.disabled]: disabled,
-        [classes?.FAB]: classes?.FAB,
-      })}
-      type="button"
-    >
-      {children}
-    </button>
-  );
-}
+}) => (
+  <button
+    onClick={onClick}
+    className={classNames({
+      [styles.button]: true,
+      [typeToColorMapping({ color, variant })]: true,
+      [styles.disabled]: disabled,
+      [classes?.FAB]: classes?.FAB,
+    })}
+    type="button"
+  >
+    {children}
+  </button>
+));
 
+export default FAB;
 FAB.propTypes = {
   color: PropTypes.oneOf([
     'primary',

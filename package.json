@@ -8,6 +8,7 @@
     "@tinymce/tinymce-react": "^3.12.6",
     "axios": "^0.21.4",
     "node-sass": "^6.0.1",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-click-away-listener": "^2.0.5",
     "react-dom": "^17.0.2",
@@ -29,6 +30,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -40,6 +44,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "install-peers": "^1.0.3"
   },
   "resolutions": {
     "react-error-overlay": "6.0.9"

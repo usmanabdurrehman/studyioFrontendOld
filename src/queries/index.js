@@ -1,29 +1,29 @@
-export { signin } from "./signin";
-export { signup } from "./signup";
-export { getTimelinePosts } from "./getTimelinePosts";
-export { getTechNews } from "./getTechNews";
-export { getProfileInfo } from "./getProfileInfo";
+export { default as signin } from './signin';
+export { default as signup } from './signup';
+export { default as getTimelinePosts } from './getTimelinePosts';
+export { default as getTechNews } from './getTechNews';
+export { default as getProfileInfo } from './getProfileInfo';
 
-export { follow } from "./follow";
-export { unfollow } from "./unfollow";
+export { default as follow } from './follow';
+export { default as unfollow } from './unfollow';
 
-export { updateProfilePicture } from "./updateProfilePicture";
+export { default as updateProfilePicture } from './updateProfilePicture';
 
-export { getPostById } from "./getPostById";
-export { addPost } from "./addPost";
-export { editPost } from "./editPost";
-export { deletePost } from "./deletePost";
+export { default as getPostById } from './getPostById';
+export { default as addPost } from './addPost';
+export { default as editPost } from './editPost';
+export { default as deletePost } from './deletePost';
 
-export { logout } from "./logout";
-export { seeNotifications } from "./seeNotifications";
-export { getUnseenNotificationsCount } from "./getUnseenNotificationsCount";
-export { fetchNames } from "./fetchNames";
-export { getNotifications } from "./getNotifications";
+export { default as logout } from './logout';
+export { default as seeNotifications } from './seeNotifications';
+export { default as getUnseenNotificationsCount } from './getUnseenNotificationsCount';
+export { default as fetchNames } from './fetchNames';
+export { default as getNotifications } from './getNotifications';
 
-export { likePost } from "./likePost";
-export { unlikePost } from "./unlikePost";
+export { default as likePost } from './likePost';
+export { default as unlikePost } from './unlikePost';
 
-export { hidePost } from "./hidePost";
-export { unhidePost } from "./unhidePost";
+export { default as hidePost } from './hidePost';
+export { default as unhidePost } from './unhidePost';
 
-export { commentOnPost } from "./commentOnPost";
+export { default as commentOnPost } from './commentOnPost';

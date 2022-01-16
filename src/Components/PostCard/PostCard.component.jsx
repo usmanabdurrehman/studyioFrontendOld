@@ -1,17 +1,17 @@
-import React from "react";
-import IconButton from "@material-ui/core/IconButton";
-import { Link } from "react-router-dom";
-import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import styles from "./PostCard.module.scss";
+import React from 'react';
+import IconButton from '@material-ui/core/IconButton';
+import { Link } from 'react-router-dom';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
-import { Button, Comment } from "Components";
+import { Button, Comment } from 'Components';
 
-import { FileIcon, defaultStyles } from "react-file-icon";
-import Popover from "@material-ui/core/Popover";
+import { FileIcon, defaultStyles } from 'react-file-icon';
+import Popover from '@material-ui/core/Popover';
 
-import { classNames, getProfileImageURL, getFileURL } from "utils";
-import { useSelector } from "react-redux";
+import { classNames, getProfileImageURL, getFileURL } from 'utils';
+import { useSelector } from 'react-redux';
+import styles from './PostCard.module.scss';
 
 export default function PostCard({
   post,
@@ -40,13 +40,14 @@ export default function PostCard({
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const id = open ? 'simple-popover' : undefined;
   return (
     <div className={styles.postCard}>
       <div className={styles.cardHeader}>
         <img
           className={styles.profilePicture}
           src={getProfileImageURL(post?.user?.profileImage)}
+          alt="Profile"
         />
         <p className={styles.nameHandle}>
           <Link to={`/profile/${post.userId}`}>{post?.user?.name}</Link>
@@ -57,12 +58,14 @@ export default function PostCard({
       </div>
       <div
         className={styles.cardBody}
-        dangerouslySetInnerHTML={{ __html: post.postText }}
-      ></div>
+        dangerouslySetInnerHTML={{
+          __html: post.postText,
+        }} /* eslint react/no-danger: 0 */
+      />
       {post.files && (
         <div className={styles.fileContainer}>
           {post.files.map((file) => {
-            const splittedFilename = file.filename.split(".");
+            const splittedFilename = file.filename.split('.');
             const ext = splittedFilename[splittedFilename.length - 1];
             return (
               <a
@@ -84,7 +87,7 @@ export default function PostCard({
         <div className={styles.postImagesWrapper}>
           {post.images.map((image) => (
             <div>
-              <img src={getFileURL(image)} />
+              <img src={getFileURL(image)} alt="File" />
             </div>
           ))}
         </div>
@@ -94,8 +97,8 @@ export default function PostCard({
           <IconButton
             edge="start"
             color="inherit"
-            onClick={(e) => {
-              if (post.liked == true) {
+            onClick={() => {
+              if (post.liked === true) {
                 unlikePost();
               } else {
                 likePost();
@@ -110,7 +113,7 @@ export default function PostCard({
               })}
             />
           </IconButton>
-          {post.likes.length != 0 && (
+          {post.likes.length !== 0 && (
             <p className={styles.likesCount}>{post.likes.length}</p>
           )}
         </div>
@@ -121,16 +124,25 @@ export default function PostCard({
             value={comment}
             placeholder="Comment..."
           />
-          {post.comments &&
-            (showMore
-              ? post.comments.map((comment) => <Comment comment={comment} />)
+          {post.comments
+            && (showMore
+              ? post.comments.map((postComment) => (
+                <Comment comment={postComment} />
+              ))
               : post.comments
-                  .slice(0, 2)
-                  .map((comment) => <Comment comment={comment} />))}
+                .slice(0, 2)
+                .map((postComment) => <Comment comment={postComment} />))}
           {post.comments.length > 2 && (
-            <p className={styles.moreText} onClick={toggleShowMore}>
-              {showMore ? "Show Less" : "Show More"}
-            </p>
+            <div
+              onClick={toggleShowMore}
+              onKeyPress={toggleShowMore}
+              role="button"
+              tabIndex="-1"
+            >
+              <p className={styles.moreText}>
+                {showMore ? 'Show Less' : 'Show More'}
+              </p>
+            </div>
           )}
         </div>
         <div>
@@ -145,24 +157,29 @@ export default function PostCard({
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
+          vertical: 'bottom',
+          horizontal: 'left',
         }}
         transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
+          vertical: 'top',
+          horizontal: 'left',
         }}
       >
         <div className={styles.postOptions}>
-          {user._id == post.userId && (
+          {user._id === post.userId && (
             <>
               <div
                 className={styles.postOption}
-                onClick={editPost}
                 onClick={() => {
                   handleClose();
                   editPost(post._id);
                 }}
+                onKeyPress={() => {
+                  handleClose();
+                  editPost(post._id);
+                }}
+                role="button"
+                tabIndex="-1"
               >
                 Edit
               </div>
@@ -172,24 +189,33 @@ export default function PostCard({
                   handleClose();
                   deletePost(post._id);
                 }}
+                onKeyPress={() => {
+                  handleClose();
+                  deletePost(post._id);
+                }}
+                role="button"
+                tabIndex="-1"
               >
                 Delete
               </div>
             </>
           )}
-          {user._id != post.userId && (
-            <>
-              <div
-                className={styles.postOption}
-                onClick={editPost}
-                onClick={() => {
-                  handleClose();
-                  post?.hidden ? unhidePost(post._id) : hidePost(post._id);
-                }}
-              >
-                {post?.hidden ? "Unhide" : "Hide"}
-              </div>
-            </>
+          {user._id !== post.userId && (
+            <div
+              className={styles.postOption}
+              onClick={() => {
+                handleClose();
+                post?.hidden ? unhidePost(post._id) : hidePost(post._id);
+              }}
+              onKeyPress={() => {
+                handleClose();
+                post?.hidden ? unhidePost(post._id) : hidePost(post._id);
+              }}
+              role="button"
+              tabIndex="-1"
+            >
+              {post?.hidden ? 'Unhide' : 'Hide'}
+            </div>
           )}
         </div>
       </Popover>

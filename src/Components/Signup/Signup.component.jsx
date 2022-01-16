@@ -1,48 +1,49 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import { Link } from "react-router-dom";
-import styles from "./Signup.module.scss";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import { Link } from 'react-router-dom';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-import IconButton from "@material-ui/core/IconButton";
+import IconButton from '@material-ui/core/IconButton';
 
-import { Button } from "Components";
+import { Button } from 'Components';
+import styles from './Signup.module.scss';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
-    display: "flex",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexWrap: 'wrap',
   },
   textField: {
     margin: 0,
-    width: "250px",
-    fontSize: "14",
+    width: '250px',
+    fontSize: '14',
   },
   labelRoot: {
-    fontSize: "14px",
+    fontSize: '14px',
   },
   labelFocused: {
-    fontSize: "17px",
+    fontSize: '17px',
   },
   select: {
-    fontSize: "14px",
+    fontSize: '14px',
   },
 }));
 
-const Signup = ({
+function Signup({
   handleClickShowPassword,
   handleMouseDownPassword,
   showPassword,
   handleSubmit,
   imageOnChange,
   fields,
-}) => {
+  onChange,
+}) {
   const classes = useStyles();
   return (
     <div className={styles.grid}>
@@ -52,15 +53,16 @@ const Signup = ({
             <h1>Sign Up</h1>
             <div className={styles.profileImageWrapper}>
               <div className={styles.fileWrapper}>
-                <input
-                  type="file"
-                  id={styles.image}
-                  onChange={imageOnChange}
-                  accept="image/*"
-                />
-                <label for={styles.image}>
+                <label htmlFor={styles.image}>
+                  <input
+                    type="file"
+                    id={styles.image}
+                    onChange={imageOnChange}
+                    accept="image/*"
+                  />
                   <img
-                    src={fields.imgUrl ? fields.imgUrl : "/defaultProfile.png"}
+                    src={fields.imgUrl ? fields.imgUrl : '/defaultProfile.png'}
+                    alt="File"
                   />
                 </label>
               </div>
@@ -76,12 +78,7 @@ const Signup = ({
                     focused: classes.labelFocused,
                   },
                 }}
-                onChange={(e) => {
-                  setFields({
-                    ...fields,
-                    name: e.target.value,
-                  });
-                }}
+                onChange={onChange}
               />
             </div>
             <div className="form-group">
@@ -96,12 +93,7 @@ const Signup = ({
                   },
                 }}
                 type="email"
-                onChange={(e) => {
-                  setFields({
-                    ...fields,
-                    email: e.target.value,
-                  });
-                }}
+                onChange={onChange}
                 autoComplete="username"
               />
             </div>
@@ -123,19 +115,14 @@ const Signup = ({
                 Password
               </InputLabel>
               <Input
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 value={fields.password}
                 name="password"
                 label="Password"
                 className={classes.textField}
-                onChange={(e) => {
-                  setFields({
-                    ...fields,
-                    password: e.target.value,
-                  });
-                }}
+                onChange={onChange}
                 autoComplete="new-password"
-                endAdornment={
+                endAdornment={(
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -146,7 +133,7 @@ const Signup = ({
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
-                }
+                )}
                 labelWidth={70}
               />
             </FormControl>
@@ -156,7 +143,8 @@ const Signup = ({
               </Button>
             </div>
             <p className={styles.linkText}>
-              Have got an account already?{" "}
+              Have got an account already?
+              {' '}
               <u>
                 <Link to="/" className={styles.link}>
                   Sign in
@@ -166,9 +154,9 @@ const Signup = ({
           </form>
         </div>
       </div>
-      <div className={styles.formImage}></div>
+      <div className={styles.formImage} />
     </div>
   );
-};
+}
 
 export default Signup;

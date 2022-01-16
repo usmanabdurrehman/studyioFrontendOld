@@ -1,13 +1,15 @@
-import React from "react";
-import styles from "./Comment.module.scss";
+import React from 'react';
+import { getProfileImageURL } from 'utils';
+import styles from './Comment.module.scss';
 
 export default function Comment({ comment }) {
   return (
     <div className={styles.commentWrapper}>
       <div>
         <img
-          src={`${process.env.REACT_APP_BACKEND_BASEURL}/profileImages/${comment?.commenter?.profileImage}`}
+          src={getProfileImageURL(comment?.commenter?.profileImage)}
           className={styles.commentProfilePicture}
+          alt="Profile"
         />
       </div>
       <div className={styles.name}>{comment.commenter.name}</div>

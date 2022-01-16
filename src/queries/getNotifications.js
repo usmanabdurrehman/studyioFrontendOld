@@ -1,8 +1,10 @@
-import { service } from "services";
+import service from 'services';
 
-export const getNotifications = async () => {
+const getNotifications = async () => {
   const { data } = await service({
-    url: "/user/notifications",
+    url: '/user/notifications',
   });
   return data;
 };
+
+export default getNotifications;

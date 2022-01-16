@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from 'react';
 
-import { getTimelinePosts, getTechNews } from "queries";
+import { getTimelinePosts, getTechNews } from 'queries';
 
-import { Timeline } from "Components";
+import { Timeline } from 'Components';
 
-const TimelineContainer = (props) => {
+function TimelineContainer() {
   const [posts, setPosts] = useState(null);
 
   const [techNews, setTechNews] = useState([]);
@@ -12,12 +12,12 @@ const TimelineContainer = (props) => {
   const fetchTimelinePosts = useCallback(async () => {
     const data = await getTimelinePosts();
     setPosts(data);
-  }, [getTimelinePosts, setPosts]);
+  }, [setPosts]);
 
-  let fetchTechNews = useCallback(async () => {
+  const fetchTechNews = useCallback(async () => {
     const { articles } = await getTechNews();
     setTechNews(articles.slice(0, 3));
-  }, [getTechNews, setTechNews]);
+  }, [setTechNews]);
 
   useEffect(() => {
     fetchTimelinePosts();
@@ -31,6 +31,6 @@ const TimelineContainer = (props) => {
       posts={posts}
     />
   );
-};
+}
 
 export default TimelineContainer;

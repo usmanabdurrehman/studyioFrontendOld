@@ -1,34 +1,34 @@
-import React from "react";
-import styles from "./SignIn.module.scss";
+import React from 'react';
 
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import { Link } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import { Link } from 'react-router-dom';
 
-import { Button, Checkbox } from "Components";
+import { Button, Checkbox } from 'Components';
+import styles from './SignIn.module.scss';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
-    display: "flex",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexWrap: 'wrap',
   },
   labelRoot: {
-    fontSize: "14px",
+    fontSize: '14px',
   },
   labelFocused: {
-    fontSize: "17px",
+    fontSize: '17px',
   },
   select: {
-    fontSize: "14px",
+    fontSize: '14px',
   },
 }));
 
-const SignIn = ({ handleSubmit, onChange, fields }) => {
+function SignIn({ handleSubmit, onChange, fields }) {
   const classes = useStyles();
 
   return (
     <div className={styles.grid}>
-      <div className={styles.formImage}></div>
+      <div className={styles.formImage} />
       <div className={styles.formContainer}>
         <div>
           <h1>Sign In</h1>
@@ -64,15 +64,10 @@ const SignIn = ({ handleSubmit, onChange, fields }) => {
             <div className={styles.checkboxWrapper}>
               <Checkbox
                 checked={fields.rememberMe}
-                onChange={(checked) => {
-                  setFields({
-                    ...fields,
-                    rememberMe: checked,
-                  });
-                }}
+                onChange={onChange}
                 className={styles.checkbox}
                 inputProps={{
-                  "aria-label": "checkbox with default color",
+                  'aria-label': 'checkbox with default color',
                 }}
               />
               <p className={styles.checkboxDescription}>Remember me</p>
@@ -82,7 +77,8 @@ const SignIn = ({ handleSubmit, onChange, fields }) => {
             </Button>
           </form>
           <p className={styles.linkText}>
-            Haven't got an account?{" "}
+            Haven&apos;t got an account?
+            {' '}
             <u>
               <Link className={styles.link} to="/signup">
                 Sign up
@@ -93,6 +89,6 @@ const SignIn = ({ handleSubmit, onChange, fields }) => {
       </div>
     </div>
   );
-};
+}
 
 export default SignIn;

@@ -1,11 +1,10 @@
-import React from "react";
-import ReactModal from "react-modal";
+import React from 'react';
+import ReactModal from 'react-modal';
 
-import { Button } from "Components";
+import { Button } from 'Components';
 
-import styles from "./Modal.module.css";
-
-import { classNames } from "utils";
+import { classNames } from 'utils';
+import styles from './Modal.module.css';
 
 export default function Modal({ modal, closeModal }) {
   const { text, buttons, onConfirm } = modal?.modalInfo || {};
@@ -20,7 +19,7 @@ export default function Modal({ modal, closeModal }) {
         [styles.componentModel]: modal?.modalComponent,
       })}
       overlayClassName={styles.overlay}
-      shouldCloseOnOverlayClick={true}
+      shouldCloseOnOverlayClick
       onRequestClose={closeModal}
     >
       {modal?.modalComponent ? (
@@ -30,7 +29,7 @@ export default function Modal({ modal, closeModal }) {
           <h4 className={styles.header}>{text}</h4>
           {buttons && (
             <div className={styles.buttonWrapper}>
-              {buttons.map(({ color, text, confirm }) => (
+              {buttons.map(({ color, text: buttonText, confirm }) => (
                 <Button
                   variant="filled"
                   color={color}
@@ -44,7 +43,7 @@ export default function Modal({ modal, closeModal }) {
                   }}
                   classes={{ button: styles.button }}
                 >
-                  {text}
+                  {buttonText}
                 </Button>
               ))}
             </div>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from 'react';
 
-import { PostCardSkeleton } from "Components";
-import { PostCard } from "Containers";
+import { PostCardSkeleton } from 'Components';
+import { PostCard } from 'Containers';
 
-import { getPostById } from "queries";
+import { getPostById } from 'queries';
 
 export default function PostFetch({ id }) {
   const [post, setPost] = useState(null);
@@ -11,7 +11,7 @@ export default function PostFetch({ id }) {
   const getPostHandler = useCallback(async () => {
     const data = await getPostById(id);
     setPost(data);
-  }, [getPostById, setPost]);
+  }, [id, setPost]);
 
   useEffect(() => {
     getPostHandler();

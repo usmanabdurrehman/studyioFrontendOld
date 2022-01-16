@@ -1,10 +1,12 @@
-import { service } from "services";
+import service from 'services';
 
-export const fetchNames = async (name) => {
+const fetchNames = async (name) => {
   const { data } = await service({
-    url: "/user/fetchNames",
-    method: "post",
+    url: '/user/fetchNames',
+    method: 'post',
     data: { name },
   });
   return data;
 };
+
+export default fetchNames;

@@ -1,10 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import styles from "./Badge.module.scss";
+import PropTypes from 'prop-types';
 
-import PropTypes from "prop-types";
-
-import { typeToColorMapping, classNames } from "utils";
+import { typeToColorMapping, classNames } from 'utils';
+import styles from './Badge.module.scss';
 
 export default function Badge({
   color,
@@ -15,8 +14,8 @@ export default function Badge({
   classes,
   children,
 }) {
-  if (typeof number == "undefined") {
-    throw new Error("A number must be supplied for displaying the badge");
+  if (typeof number === 'undefined') {
+    throw new Error('A number must be supplied for displaying the badge');
   }
 
   return (
@@ -39,22 +38,23 @@ export default function Badge({
 
 Badge.propTypes = {
   color: PropTypes.oneOf([
-    "primary",
-    "success",
-    "warning",
-    "danger",
-    "default",
+    'primary',
+    'success',
+    'warning',
+    'danger',
+    'default',
   ]),
-  number: PropTypes.number,
+  number: PropTypes.number.isRequired,
   max: PropTypes.number,
   showZero: PropTypes.bool,
   invisible: PropTypes.bool,
-  classes: PropTypes.object,
+  classes: { [PropTypes.string]: PropTypes.string },
 };
 
 Badge.defaultProps = {
-  color: "default",
+  color: 'default',
   max: 99,
   showZero: false,
   invisible: false,
+  classes: {},
 };

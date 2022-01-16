@@ -1,8 +1,10 @@
-import { service } from "services";
+import service from 'services';
 
-export const logout = async () => {
+const logout = async () => {
   const { data } = await service({
-    url: "/user/logout",
+    url: '/user/logout',
   });
   return data;
 };
+
+export default logout;

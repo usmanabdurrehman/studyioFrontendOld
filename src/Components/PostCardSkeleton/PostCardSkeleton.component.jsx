@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
-import styles from "./PostCardSkeleton.module.scss";
+import styles from './PostCardSkeleton.module.scss';
 
 export default function PostCardSkeleton() {
   return (
@@ -19,19 +19,17 @@ export default function PostCardSkeleton() {
       </div>
       <div className={styles.fileContainer}>
         {Array(3)
-          .fill("-")
-          .map(() => {
-            return (
-              <div className={styles.fileCard}>
-                <div className={styles.fileCardIcon}>
-                  <Skeleton width="40px" height="60px" />
-                </div>
-                <div className={styles.fileName}>
-                  <Skeleton />
-                </div>
+          .fill('-')
+          .map(() => (
+            <div className={styles.fileCard}>
+              <div className={styles.fileCardIcon}>
+                <Skeleton width="40px" height="60px" />
               </div>
-            );
-          })}
+              <div className={styles.fileName}>
+                <Skeleton />
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

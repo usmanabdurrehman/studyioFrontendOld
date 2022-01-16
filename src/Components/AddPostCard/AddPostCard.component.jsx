@@ -1,20 +1,19 @@
-import React from "react";
-import styles from "./AddPostCard.module.scss";
-import AttachmentIcon from "@material-ui/icons/Attachment";
+import React from 'react';
+import AttachmentIcon from '@material-ui/icons/Attachment';
 
-import { Button } from "../";
+import { Editor } from '@tinymce/tinymce-react';
 
-import { Editor } from "@tinymce/tinymce-react";
+import { FileIcon, defaultStyles } from 'react-file-icon';
 
-import { FileIcon, defaultStyles } from "react-file-icon";
+import ImageIcon from '@material-ui/icons/Image';
 
-import ImageIcon from "@material-ui/icons/Image";
+import { getFileURL } from 'utils';
 
-import { getFileURL } from "utils";
+import CancelIcon from '@material-ui/icons/Cancel';
+import { Button } from '..';
+import styles from './AddPostCard.module.scss';
 
-import CancelIcon from "@material-ui/icons/Cancel";
-
-const AddPostCard = ({
+function AddPostCard({
   post,
   postText,
   addPost,
@@ -26,35 +25,35 @@ const AddPostCard = ({
   onImageChange,
   onCloseImageClick,
   onCloseFileClick,
-}) => {
+}) {
   return (
     <div className={styles.card}>
       <div className={styles.cardHeader}>
-        <div>{post ? "Edit Post" : "New Post"}</div>
+        <div>{post ? 'Edit Post' : 'New Post'}</div>
         <div className={styles.iconsWrapper}>
           <div className={styles.profileImageWrapper}>
             <div className={styles.fileWrapper}>
-              <input
-                type="file"
-                id={styles.image}
-                onChange={onImageChange}
-                multiple={true}
-                accept=".jpg,.png"
-              />
-              <label for={styles.image}>
+              <label htmlFor={styles.image}>
+                <input
+                  type="file"
+                  id={styles.image}
+                  onChange={onImageChange}
+                  multiple
+                  accept=".jpg,.png"
+                />
                 <ImageIcon className={styles.icon} />
               </label>
             </div>
           </div>
           <div className={styles.profileImageWrapper}>
             <div className={styles.fileWrapper}>
-              <input
-                type="file"
-                id={styles.attach}
-                onChange={onFileChange}
-                multiple={true}
-              />
-              <label for={styles.attach}>
+              <label htmlFor={styles.attach}>
+                <input
+                  type="file"
+                  id={styles.attach}
+                  onChange={onFileChange}
+                  multiple
+                />
                 <AttachmentIcon className={styles.icon} />
               </label>
             </div>
@@ -68,9 +67,9 @@ const AddPostCard = ({
               className={styles.textarea}
               apiKey="mr7s25j95m3vnm6e6bty7baeo74sc83zmll44tbxcpl959ou"
               init={{
-                plugins: "emoticons",
-                toolbar: "emoticons",
-                toolbar_location: "bottom",
+                plugins: 'emoticons',
+                toolbar: 'emoticons',
+                toolbar_location: 'bottom',
                 menubar: false,
                 resize: false,
               }}
@@ -84,19 +83,19 @@ const AddPostCard = ({
                 const isUploadedFile = file?.filename;
                 const extensionArr = (
                   isUploadedFile ? file?.filename : file.type
-                ).split(isUploadedFile ? "." : "/");
+                )?.split(isUploadedFile ? '.' : '/');
                 const extension = extensionArr[extensionArr.length - 1];
                 return (
                   <div className={styles.fileIcon}>
                     <FileIcon
                       extension={extension}
-                      {...defaultStyles[extension]}
+                      {...defaultStyles[
+                        extension
+                      ]} /* eslint react/jsx-props-no-spreading: 0 */
                     />
                     <CancelIcon
                       className={styles.removeFileIcon}
-                      onClick={() =>
-                        onCloseFileClick(file?.name || file?.filename)
-                      }
+                      onClick={() => onCloseFileClick(file?.name || file?.filename)}
                     />
                   </div>
                 );
@@ -109,10 +108,11 @@ const AddPostCard = ({
                 <div className={styles.imageWrapper}>
                   <img
                     src={
-                      typeof image == "string"
+                      typeof image === 'string'
                         ? getFileURL(image)
                         : URL.createObjectURL(image)
                     }
+                    alt="Post"
                   />
                   <CancelIcon
                     className={styles.removeIcon}
@@ -129,13 +129,13 @@ const AddPostCard = ({
               variant="filled"
               classes={{ button: styles.addButton }}
             >
-              {post ? "Update" : "Add Post"}
+              {post ? 'Update' : 'Add Post'}
             </Button>
           </div>
         </form>
       </div>
     </div>
   );
-};
+}
 
 export default AddPostCard;

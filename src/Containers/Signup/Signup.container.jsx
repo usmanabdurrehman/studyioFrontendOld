@@ -1,38 +1,38 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback } from 'react';
 
-import { signup } from "queries";
+import { signup } from 'queries';
 
-import { Signup } from "Components";
+import { Signup } from 'Components';
 
-const SignupContainer = ({ navigateToSignin }) => {
+function SignupContainer({ navigateToSignin }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const [fields, setFields] = useState({
-    name: "",
-    email: "",
-    password: "",
-    image: "",
-    imgUrl: "",
+    name: '',
+    email: '',
+    password: '',
+    image: '',
+    imgUrl: '',
   });
 
-  let imageOnChange = useCallback(
+  const imageOnChange = useCallback(
     (e) => {
       if (e.target.files[0]) {
-        let imgUrl = URL.createObjectURL(e.target.files[0]);
-        setFields((fields) => ({
-          ...fields,
+        const imgUrl = URL.createObjectURL(e.target.files[0]);
+        setFields((prevFields) => ({
+          ...prevFields,
           image: e.target.files[0],
           imgUrl,
         }));
       }
     },
-    [setFields]
+    [setFields],
   );
 
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-      let formdata = new FormData();
+      const formdata = new FormData();
       Object.entries(fields).forEach(([key, value]) => {
         formdata.append(key, value);
       });
@@ -41,11 +41,11 @@ const SignupContainer = ({ navigateToSignin }) => {
         navigateToSignin();
       }
     },
-    [fields, navigateToSignin, signup]
+    [fields, navigateToSignin],
   );
 
   const handleClickShowPassword = useCallback(() => {
-    setShowPassword(!showPassword);
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   }, [setShowPassword]);
 
   const handleMouseDownPassword = useCallback((event) => {
@@ -62,6 +62,6 @@ const SignupContainer = ({ navigateToSignin }) => {
       fields={fields}
     />
   );
-};
+}
 
 export default SignupContainer;

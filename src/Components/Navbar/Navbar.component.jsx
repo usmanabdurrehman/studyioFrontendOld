@@ -1,21 +1,18 @@
-import React from "react";
-import styles from "./Navbar.module.scss";
+import React from 'react';
 
-import { Container } from "../";
+import { Link, useHistory } from 'react-router-dom';
 
-import { Link, useHistory } from "react-router-dom";
+import ClickAwayListener from 'react-click-away-listener';
 
-import ClickAwayListener from "react-click-away-listener";
+import HomeIcon from '@material-ui/icons/Home';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import HomeIcon from "@material-ui/icons/Home";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import { getProfileImageURL } from 'utils';
 
-import { Badge } from "../";
-
-import { getProfileImageURL, classNames } from "utils";
-
-import SearchIcon from "@material-ui/icons/Search";
+import SearchIcon from '@material-ui/icons/Search';
+import { Badge, Container } from '..';
+import styles from './Navbar.module.scss';
 
 export default function Navbar({
   user: { _id, profileImage },
@@ -52,21 +49,29 @@ export default function Navbar({
               />
               {searchNames && showNames && (
                 <div className={styles.nameList}>
-                  {searchNames.map(({ name, _id, profileImage }) => (
-                    <div
-                      onClick={() => {
-                        removeSearchResults();
-                        history.push(`/profile/${_id}`);
-                      }}
-                    >
-                      <img
-                        src={getProfileImageURL(profileImage)}
-                        alt=""
-                        className={styles.searchImage}
-                      />
-                      <div className={styles.searchName}>{name}</div>
-                    </div>
-                  ))}
+                  {searchNames.map(
+                    ({ name, _id: userId, profileImageName }) => (
+                      <div
+                        onClick={() => {
+                          removeSearchResults();
+                          history.push(`/profile/${userId}`);
+                        }}
+                        onKeyPress={() => {
+                          removeSearchResults();
+                          history.push(`/profile/${userId}`);
+                        }}
+                        role="button"
+                        tabIndex="-1"
+                      >
+                        <img
+                          src={getProfileImageURL(profileImageName)}
+                          alt=""
+                          className={styles.searchImage}
+                        />
+                        <div className={styles.searchName}>{name}</div>
+                      </div>
+                    ),
+                  )}
                 </div>
               )}
             </div>
@@ -75,7 +80,8 @@ export default function Navbar({
         <div className={styles.menu}>
           <div>
             <Link to="/timeline">
-              <HomeIcon className={styles.icon} />{" "}
+              <HomeIcon className={styles.icon} />
+              {' '}
             </Link>
           </div>
           <div>
@@ -87,7 +93,7 @@ export default function Navbar({
               />
             </Link>
           </div>
-          <ClickAwayListener onClickAway={(e) => unshowNotifications()}>
+          <ClickAwayListener onClickAway={() => unshowNotifications()}>
             <div className={styles.notificationWrapper}>
               <Badge number={unseenNotificationCount} color="danger">
                 <NotificationsIcon
@@ -98,18 +104,28 @@ export default function Navbar({
               {notifications && showNotifications && (
                 <div className={styles.notificationsList}>
                   {notifications.map(
-                    ({ message, profileImage, action, doerId, postId }) => (
+                    ({
+                      message, profileImageName, action, doerId, postId,
+                    }) => (
                       <div
                         className={styles.notificationItem}
                         onClick={() => {
                           unshowNotifications();
-                          action == "followed"
+                          action === 'followed'
                             ? history.push(`/profile/${doerId}`)
                             : history.push(`/post/${postId}`);
                         }}
+                        onKeyPress={() => {
+                          unshowNotifications();
+                          action === 'followed'
+                            ? history.push(`/profile/${doerId}`)
+                            : history.push(`/post/${postId}`);
+                        }}
+                        role="button"
+                        tabIndex="-1"
                       >
                         <img
-                          src={getProfileImageURL(profileImage)}
+                          src={getProfileImageURL(profileImageName)}
                           alt=""
                           className={styles.profileImage}
                         />
@@ -117,15 +133,16 @@ export default function Navbar({
                           {message}
                         </div>
                       </div>
-                    )
+                    ),
                   )}
                 </div>
               )}
             </div>
           </ClickAwayListener>
-          <div onClick={logout}>
-            <ExitToAppIcon className={styles.icon} />{" "}
+          <div>
+            <ExitToAppIcon className={styles.icon} onClick={logout} />
           </div>
+          {' '}
         </div>
       </Container>
     </div>

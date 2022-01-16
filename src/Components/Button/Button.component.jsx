@@ -1,9 +1,9 @@
-import React from "react";
-import styles from "./Button.module.scss";
+import React from 'react';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { classNames, typeToColorMapping } from "utils";
+import { classNames, typeToColorMapping } from 'utils';
+import styles from './Button.module.scss';
 
 export default function Button({
   className,
@@ -16,13 +16,13 @@ export default function Button({
   onClick,
   ...rest
 }) {
-  let typeToSizeMapper = (size) => {
-    let typeToSizeMapper = {
+  const typeToSizeMapper = (sizeToMap) => {
+    const typeToSizeMap = {
       small: styles.buttonSmall,
       medium: styles.buttonMedium,
       large: styles.buttonLarge,
     };
-    return typeToSizeMapper[size] || typeToSizeMapper.small;
+    return typeToSizeMap[sizeToMap] || typeToSizeMap.small;
   };
 
   return (
@@ -37,6 +37,7 @@ export default function Button({
         [styles.fullWidth]: fullWidth,
         [classes?.button]: classes?.button,
       })}
+      type="button"
       {...rest}
     >
       {children}
@@ -46,22 +47,21 @@ export default function Button({
 
 Button.propTypes = {
   color: PropTypes.oneOf([
-    "primary",
-    "success",
-    "warning",
-    "danger",
-    "default",
+    'primary',
+    'success',
+    'warning',
+    'danger',
+    'default',
   ]),
-  variant: PropTypes.oneOf(["filled", "outlined"]),
-  size: PropTypes.oneOf(["small", "medium", "large"]),
+  variant: PropTypes.oneOf(['filled', 'outlined']),
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
   fullWidth: PropTypes.bool,
   classes: PropTypes.object,
 };
 
 Button.defaultProps = {
-  color: "default",
-  variant: "outlined",
-  children: "default",
-  size: "small",
+  color: 'default',
+  variant: 'outlined',
+  size: 'small',
   fullWidth: false,
 };

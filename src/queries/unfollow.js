@@ -1,10 +1,12 @@
-import { service } from "services";
+import service from 'services';
 
-export const unfollow = async (id) => {
+const unfollow = async (id) => {
   const { data } = await service({
-    method: "delete",
-    url: "/user/follow",
+    method: 'delete',
+    url: '/user/follow',
     data: { userId: id },
   });
   return data;
 };
+
+export default unfollow;

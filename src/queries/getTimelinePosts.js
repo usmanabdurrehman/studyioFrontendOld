@@ -1,8 +1,10 @@
-import { service } from "services";
+import service from 'services';
 
-export const getTimelinePosts = async () => {
+const getTimelinePosts = async () => {
   const { data } = await service({
-    url: "/user/timelinePosts",
+    url: '/user/timelinePosts',
   });
   return data;
 };
+
+export default getTimelinePosts;

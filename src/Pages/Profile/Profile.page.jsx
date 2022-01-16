@@ -1,17 +1,15 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from 'react';
 
-import { Layout } from "Layouts";
+import Layout from 'Layouts';
 
-import { Profile } from "Containers";
+import { Profile } from 'Containers';
 
-const ProfilePage = (props) => {
-  const id = useMemo(() => props.match.params.id, [props]);
+export default function ProfilePage({ match: { params: { id } } }) {
+  const profileId = useMemo(() => id, [id]);
 
   return (
     <Layout useGutter={false}>
-      <Profile id={id} />
+      <Profile id={profileId} />
     </Layout>
   );
-};
-
-export default ProfilePage;
+}

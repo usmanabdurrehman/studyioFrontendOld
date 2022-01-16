@@ -1,10 +1,12 @@
-import { service } from "services";
+import service from 'services';
 
-export const signin = async (fields) => {
+const signin = async (fields) => {
   const { data } = await service({
-    url: "/signin",
-    method: "post",
+    url: '/signin',
+    method: 'post',
     data: fields,
   });
   return data;
 };
+
+export default signin;

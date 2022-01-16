@@ -1,9 +1,9 @@
-import React from "react";
-import styles from "./FAB.module.scss";
+import React from 'react';
 
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import { classNames, typeToColorMapping } from "utils";
+import { classNames, typeToColorMapping } from 'utils';
+import styles from './FAB.module.scss';
 
 export default function FAB({
   children,
@@ -22,6 +22,7 @@ export default function FAB({
         [styles.disabled]: disabled,
         [classes?.FAB]: classes?.FAB,
       })}
+      type="button"
     >
       {children}
     </button>
@@ -30,19 +31,19 @@ export default function FAB({
 
 FAB.propTypes = {
   color: PropTypes.oneOf([
-    "primary",
-    "success",
-    "warning",
-    "danger",
-    "default",
+    'primary',
+    'success',
+    'warning',
+    'danger',
+    'default',
   ]),
-  variant: PropTypes.oneOf(["filled", "outlined"]),
+  variant: PropTypes.oneOf(['filled', 'outlined']),
   disabled: PropTypes.bool,
   classes: PropTypes.object,
 };
 
 FAB.defaultProps = {
-  color: "default",
-  variant: "outlined",
+  color: 'default',
+  variant: 'outlined',
   disabled: false,
 };

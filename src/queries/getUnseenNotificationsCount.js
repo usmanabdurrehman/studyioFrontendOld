@@ -1,8 +1,10 @@
-import { service } from "services";
+import service from 'services';
 
-export const getUnseenNotificationsCount = async () => {
+const getUnseenNotificationsCount = async () => {
   const { data } = await service({
-    url: `/user/getUnseenNotificationsCount`,
+    url: '/user/getUnseenNotificationsCount',
   });
   return data;
 };
+
+export default getUnseenNotificationsCount;

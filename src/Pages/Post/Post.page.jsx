@@ -1,15 +1,15 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from 'react';
 
-import { PostFetch } from "Containers";
+import { PostFetch } from 'Containers';
 
-import { Layout } from "Layouts";
+import Layout from 'Layouts';
 
-export default function PostPage(props) {
-  const id = useMemo(() => props.match.params.id, [props.match]);
+export default function PostPage({ match: { params: { id } } }) {
+  const postId = useMemo(() => id, [id]);
 
   return (
     <Layout>
-      <PostFetch id={id} />
+      <PostFetch id={postId} />
     </Layout>
   );
 }

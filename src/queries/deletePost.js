@@ -1,10 +1,12 @@
-import { service } from "services";
+import service from 'services';
 
-export const deletePost = async (id) => {
+const deletePost = async (id) => {
   const { data } = await service({
-    url: "/user/posts",
-    method: "delete",
+    url: '/user/posts',
+    method: 'delete',
     data: { postId: id },
   });
   return data;
 };
+
+export default deletePost;

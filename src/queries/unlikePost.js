@@ -1,11 +1,13 @@
-import { service } from "services";
+import service from 'services';
 
-export const unlikePost = async (postId) => {
+const unlikePost = async (postId) => {
   const { data } = await service({
-    method: "delete",
-    url: "/user/likes",
+    method: 'delete',
+    url: '/user/likes',
     data: { postId },
     withCredentials: true,
   });
   return data;
 };
+
+export default unlikePost;

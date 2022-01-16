@@ -1,10 +1,12 @@
-import { service } from "services";
+import service from 'services';
 
-export const follow = async (id) => {
+const follow = async (id) => {
   const { data } = await service({
-    method: "post",
-    url: "/user/follow",
+    method: 'post',
+    url: '/user/follow',
     data: { userId: id },
   });
   return data;
 };
+
+export default follow;

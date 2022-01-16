@@ -1,14 +1,12 @@
-let AlertReducer = (state = { showAlert: false, alertInfo: null }, action) => {
+/* eslint default-param-last: 0 */
+const AlertReducer = (state = { showAlert: false, alertInfo: null }, action) => {
   switch (action.type) {
-    case "SHOW_ALERT":
+    case 'SHOW_ALERT':
       return { showAlert: true, alertInfo: action.payload };
-      break;
-    case "HIDE_ALERT":
+    case 'HIDE_ALERT':
       return { showAlert: false };
-      break;
     default:
       return state;
-      break;
   }
 };
 

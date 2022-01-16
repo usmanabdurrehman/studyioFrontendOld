@@ -1,17 +1,17 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback } from 'react';
 
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
-import { signin } from "queries";
+import { signin } from 'queries';
 
-import { SignIn } from "Components";
+import { SignIn } from 'Components';
 
-const SignInContainer = ({ navigateToTimeline }) => {
+function SignInContainer({ navigateToTimeline }) {
   const dispatch = useDispatch();
 
   const [fields, setFields] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
     rememberMe: false,
   });
 
@@ -20,22 +20,20 @@ const SignInContainer = ({ navigateToTimeline }) => {
       e.preventDefault();
       const { auth, user } = await signin(fields);
       if (auth) {
-        dispatch({ type: "SET_USER", payload: user });
+        dispatch({ type: 'SET_USER', payload: user });
         navigateToTimeline();
       }
     },
-    [signin, dispatch, fields, navigateToTimeline]
+    [dispatch, fields, navigateToTimeline],
   );
 
   const onChange = (e) => {
     setFields({ ...fields, [e.target.name]: e.target.value });
   };
 
-  console.log(fields);
-
   return (
     <SignIn onChange={onChange} handleSubmit={handleSubmit} fields={fields} />
   );
-};
+}
 
 export default SignInContainer;

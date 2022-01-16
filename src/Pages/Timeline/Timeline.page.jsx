@@ -1,13 +1,13 @@
-import React from "react";
-import { Timeline } from "Containers";
-import { Layout } from "Layouts";
+import React from 'react';
+import { Timeline } from 'Containers';
+import Layout from 'Layouts';
 
-const TimelineContainer = (props) => {
+function TimelineContainer() {
   return (
     <Layout>
       <Timeline />
     </Layout>
   );
-};
+}
 
 export default TimelineContainer;

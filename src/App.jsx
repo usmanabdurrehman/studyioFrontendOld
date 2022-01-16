@@ -1,17 +1,19 @@
-import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-import { Signin, Signup, Timeline, Profile, Post } from "Pages";
+import {
+  Signin, Signup, Timeline, Profile, Post,
+} from 'Pages';
 
-import { AlertProvider, ModalProvider } from "Providers";
-import { ToastProvider } from "react-toast-notifications";
+import { AlertProvider, ModalProvider } from 'Providers';
+import { ToastProvider } from 'react-toast-notifications';
 
-import { PublicRoute, PrivateRoute } from "Routes";
+import { PublicRoute, PrivateRoute } from 'Routes';
 
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 
-const App = () => {
-  const isAuth = useSelector((state) => state.user) ? true : false;
+function App() {
+  const isAuth = !!useSelector((state) => state.user);
 
   return (
     <div id="App">
@@ -38,6 +40,6 @@ const App = () => {
       </ToastProvider>
     </div>
   );
-};
+}
 
 export default App;

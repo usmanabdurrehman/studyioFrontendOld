@@ -1,12 +1,12 @@
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react';
 
-import { Signup } from "Containers";
+import { Signup } from 'Containers';
 
-const SignupPage = (props) => {
+function SignupPage({ history }) {
   const navigateToSignin = useCallback(() => {
-    props.history.push("/");
-  }, [props.history]);
+    history.push('/');
+  }, [history]);
   return <Signup navigateToSignin={navigateToSignin} />;
-};
+}
 
 export default SignupPage;

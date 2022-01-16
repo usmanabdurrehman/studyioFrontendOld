@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback } from 'react';
 
 import {
   likePost,
@@ -7,64 +7,41 @@ import {
   deletePost,
   hidePost,
   unhidePost,
-} from "queries";
-import { PostCard } from "Components";
-import { useDispatch } from "react-redux";
+} from 'queries';
+import { PostCard } from 'Components';
+import { useDispatch } from 'react-redux';
 
-import { AddPostCard } from "Containers";
+import { AddPostCard } from 'Containers';
 
 export default function PostCardContainer({ post, fetchFunction }) {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const [showMore, setShowMore] = useState(false);
 
   const dispatch = useDispatch();
 
   const likePostHandler = useCallback(async () => {
-    let postId = post._id;
+    const postId = post._id;
     const { status } = await likePost(postId);
     status && fetchFunction();
-  }, [post, likePost, fetchFunction]);
+  }, [post, fetchFunction]);
 
   const unlikePostHandler = useCallback(async () => {
-    let postId = post._id;
+    const postId = post._id;
     const { status } = await unlikePost(postId);
     status && fetchFunction();
-  }, [post, unlikePost, fetchFunction]);
+  }, [post, fetchFunction]);
 
   const commentOnPostHandler = useCallback(
     async (e) => {
       e && e.preventDefault();
-      let postId = post._id;
+      const postId = post._id;
       const { status } = await commentOnPost(comment, postId);
       if (status) {
         fetchFunction();
-        setComment("");
+        setComment('');
       }
     },
-    [post, commentOnPost, fetchFunction, setComment]
-  );
-
-  const showDeleteModal = useCallback(
-    (id) =>
-      dispatch({
-        type: "SHOW_CONFIRM_MODAL",
-        payload: {
-          text: "Are you sure you want to delete this post?",
-          onConfirm: () => deletePostHandler(id),
-          buttons: [
-            {
-              text: "Yes",
-              color: "danger",
-              confirm: true,
-            },
-            {
-              text: "Cancel",
-              color: "default",
-            },
-          ],
-        },
-      }),
-    [dispatch]
+    [comment, post, fetchFunction, setComment],
   );
 
   const deletePostHandler = useCallback(
@@ -72,29 +49,51 @@ export default function PostCardContainer({ post, fetchFunction }) {
       const { status } = await deletePost(id);
       status && fetchFunction();
     },
-    [deletePost, fetchFunction]
+    [fetchFunction],
+  );
+
+  const showDeleteModal = useCallback(
+    (id) => dispatch({
+      type: 'SHOW_CONFIRM_MODAL',
+      payload: {
+        text: 'Are you sure you want to delete this post?',
+        onConfirm: () => deletePostHandler(id),
+        buttons: [
+          {
+            text: 'Yes',
+            color: 'danger',
+            confirm: true,
+          },
+          {
+            text: 'Cancel',
+            color: 'default',
+          },
+        ],
+      },
+    }),
+    [deletePostHandler, dispatch],
   );
 
   const showEditModal = useCallback(
-    (id) => {
+    () => {
       dispatch({
-        type: "SHOW_COMPONENT_MODAL",
+        type: 'SHOW_COMPONENT_MODAL',
         payload: <AddPostCard post={post} fetchFunction={fetchFunction} />,
       });
     },
-    [dispatch]
+    [fetchFunction, post, dispatch],
   );
 
   const commentOnChange = useCallback(
     (e) => {
       setComment(e.target.value);
     },
-    [setComment]
+    [setComment],
   );
 
   const toggleShowMore = useCallback(
-    () => setShowMore(!showMore),
-    [setShowMore]
+    () => setShowMore((prevShowMore) => !prevShowMore),
+    [setShowMore],
   );
 
   const hidePostHandler = useCallback(
@@ -102,7 +101,7 @@ export default function PostCardContainer({ post, fetchFunction }) {
       const { status } = await hidePost(postId);
       status && fetchFunction();
     },
-    [hidePost, fetchFunction]
+    [fetchFunction],
   );
 
   const unhidePostHandler = useCallback(
@@ -110,7 +109,7 @@ export default function PostCardContainer({ post, fetchFunction }) {
       const { status } = await unhidePost(postId);
       status && fetchFunction();
     },
-    [unhidePost, fetchFunction]
+    [fetchFunction],
   );
 
   return (

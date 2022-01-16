@@ -1,22 +1,22 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from 'react';
 
-import styles from "./Profile.module.scss";
-import { PostCard } from "Containers";
+import { PostCard } from 'Containers';
 
-import { FAB, Button, PostCardSkeleton } from "Components";
+import { FAB, Button, PostCardSkeleton } from 'Components';
 
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import PersonAddDisabledIcon from "@material-ui/icons/PersonAddDisabled";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 
-import Modal from "react-modal";
+import Modal from 'react-modal';
 
-import { getProfileImageURL } from "utils";
+import { getProfileImageURL } from 'utils';
 
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import Skeleton from 'react-loading-skeleton';
+import styles from './Profile.module.scss';
+import 'react-loading-skeleton/dist/skeleton.css';
 
-const Profile = ({
+function Profile({
   profileInfo,
   follow,
   unfollow,
@@ -29,7 +29,7 @@ const Profile = ({
   userId,
   id,
   fetchProfileInfo,
-}) => {
+}) {
   const profileWrapperRef = useRef();
 
   useEffect(() => {
@@ -40,6 +40,15 @@ const Profile = ({
     }
   }, [profileWrapperRef]);
 
+  const getProfileURL = () => {
+    if (fields.imgUrl) {
+      return fields.imageUrl;
+    }
+    if (profileInfo?.user?.profileImage) {
+      return getProfileImageURL(profileInfo?.user?.profileImage);
+    } return '/defaultProfile.png';
+  };
+
   return (
     <div>
       <div className={styles.profileWrapper} ref={profileWrapperRef}>
@@ -49,11 +58,18 @@ const Profile = ({
               <img
                 src={getProfileImageURL(profileInfo?.user?.profileImage)}
                 className={styles.profilePic}
+                alt="Profile"
               />
             ) : (
               <Skeleton height={150} width={150} />
             )}
-            <div className={styles.cameraIconWrapper} onClick={openModal}>
+            <div
+              className={styles.cameraIconWrapper}
+              onClick={openModal}
+              onKeyPress={openModal}
+              role="button"
+              tabIndex="-1"
+            >
               <CameraAltIcon className={styles.cameraIcon} />
             </div>
           </div>
@@ -85,11 +101,11 @@ const Profile = ({
       <div className={styles.posts}>
         <div>
           {profileInfo?.posts ? (
-            profileInfo?.posts?.length > 0 &&
-            profileInfo?.posts.map((post) => (
+            profileInfo?.posts?.length > 0
+            && profileInfo?.posts.map((post) => (
               <PostCard
                 post={post}
-                page={"profile"}
+                page="profile"
                 fetchFunction={fetchProfileInfo}
               />
             ))
@@ -108,17 +124,13 @@ const Profile = ({
           <form onSubmit={updateProfile} className={styles.profileForm}>
             <div className={styles.profileImageWrapper}>
               <div className={styles.fileWrapper}>
-                <input type="file" id={styles.image} onChange={imageOnChange} />
-                <label for={styles.image}>
-                  <img
-                    src={
-                      fields.imgUrl
-                        ? fields.imgUrl
-                        : profileInfo?.user?.profileImage
-                        ? getProfileImageURL(profileInfo?.user?.profileImage)
-                        : "/defaultProfile.png"
-                    }
+                <label htmlFor={styles.image}>
+                  <input
+                    type="file"
+                    id={styles.image}
+                    onChange={imageOnChange}
                   />
+                  <img src={getProfileURL()} alt="Profile" />
                 </label>
               </div>
             </div>
@@ -127,7 +139,7 @@ const Profile = ({
             </Button>
           </form>
         </Modal>
-        {userId != id && profileInfo?.user && (
+        {userId !== id && profileInfo?.user && (
           <div className={styles.fabWrapper}>
             <FAB
               variant="filled"
@@ -144,6 +156,6 @@ const Profile = ({
       </div>
     </div>
   );
-};
+}
 
 export default Profile;

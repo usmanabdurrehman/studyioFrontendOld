@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useCallback } from 'react';
 
-import { SignIn } from "Containers";
+import { SignIn } from 'Containers';
 
-const SignInPage = (props) => {
-  const navigateToTimeline = () => {
-    props.history.push("/timeline");
-  };
+function SignInPage({ history }) {
+  const navigateToTimeline = useCallback(() => {
+    history.push('/timeline');
+  }, [history]);
   return <SignIn navigateToTimeline={navigateToTimeline} />;
-};
+}
 
 export default SignInPage;

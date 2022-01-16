@@ -1,32 +1,31 @@
-import React, { useState, useEffect } from "react";
-import styles from "./Layout.module.scss";
-import { Footer, Container, FAB, Chat } from "Components";
+import React, { useState, useEffect } from 'react';
+import { Footer, Container, FAB } from 'Components';
+import { Chat, Navbar } from 'Containers';
 
-import MessageIcon from "@material-ui/icons/Message";
-import ClearIcon from "@material-ui/icons/Clear";
+import MessageIcon from '@material-ui/icons/Message';
+import ClearIcon from '@material-ui/icons/Clear';
 
-import { Navbar } from "Containers";
+import { classNames } from 'utils';
 
-import { classNames } from "utils";
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useDispatch, useSelector } from "react-redux";
-
-import socketClient from "socket.io-client";
+import socketClient from 'socket.io-client';
+import styles from './Layout.module.scss';
 
 export default function Layout({ children, useGutter = true }) {
-  let [showChat, setShowChat] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const socket = useSelector((state) => state.socket);
   const dispatch = useDispatch();
 
+  const user = useSelector((state) => state.user);
+
   useEffect(() => {
-    const socketInstance = socketClient("http://localhost:7000/", {
+    const socketInstance = socketClient('http://localhost:7000/', {
       withCredentials: true,
     });
-    socketInstance.emit("joinRoom", { id: user._id });
-    dispatch({ type: "SET_SOCKET", payload: socketInstance });
-  }, [socketClient, dispatch]);
-
-  const user = useSelector((state) => state.user);
+    socketInstance.emit('joinRoom', { id: user._id });
+    dispatch({ type: 'SET_SOCKET', payload: socketInstance });
+  }, [user._id, dispatch]);
 
   return (
     socket && (
@@ -52,7 +51,10 @@ export default function Layout({ children, useGutter = true }) {
           >
             <Chat />
           </div>
-          <FAB variant="filled" onClick={(e) => setShowChat(!showChat)}>
+          <FAB
+            variant="filled"
+            onClick={() => setShowChat((prevShowChat) => !prevShowChat)}
+          >
             {showChat ? <ClearIcon /> : <MessageIcon />}
           </FAB>
         </div>

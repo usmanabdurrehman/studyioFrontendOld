@@ -1,10 +1,12 @@
-import { service } from "services";
+import service from 'services';
 
-export const likePost = async (postId) => {
+const likePost = async (postId) => {
   const { data } = await service({
-    method: "post",
-    url: "/user/likes",
+    method: 'post',
+    url: '/user/likes',
     data: { postId },
   });
   return data;
 };
+
+export default likePost;

@@ -5,35 +5,27 @@ import { classNames } from 'utils';
 import PropTypes from 'prop-types';
 import styles from './Container.module.scss';
 
-// Have to convert these inline styles to classes
-
 const Container = memo(({
   children,
   classes,
   maxWidth,
   disableGutters,
 }) => {
-  const maxWidthMapper = (maxWidthToMap) => {
-    const maxWidthMap = {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    };
-    return maxWidthMap[maxWidthToMap] || maxWidthMap.lg;
+  const maxWidthClass = () => {
+    const isKeyInSizes = ['xs', 'sm', 'md', 'lg', 'xl'].includes(
+      (sizeKey) => sizeKey === maxWidth,
+    );
+    return styles[`width-${isKeyInSizes ? maxWidth : 'lg'}`];
   };
 
   return (
     <div
       className={classNames({
         [styles.container]: true,
+        [maxWidthClass]: true,
+        [styles.addGutters]: !disableGutters,
         [classes?.container]: classes?.container,
       })}
-      style={{
-        maxWidth: maxWidthMapper(maxWidth),
-        padding: disableGutters ? 0 : '0 16px',
-      }}
     >
       {children}
     </div>

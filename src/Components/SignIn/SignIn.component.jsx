@@ -46,6 +46,7 @@ const SignIn = memo(({ handleSubmit, onChange, fields }) => {
               }}
               onChange={onChange}
               autoComplete="username"
+              required
             />
             <TextField
               name="password"
@@ -60,6 +61,7 @@ const SignIn = memo(({ handleSubmit, onChange, fields }) => {
               }}
               onChange={onChange}
               autoComplete="current-password"
+              required
             />
             <div className={styles.checkboxWrapper}>
               <Checkbox

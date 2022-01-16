@@ -12,6 +12,8 @@ import Modal from 'react-modal';
 
 import { getProfileImageURL } from 'utils';
 
+import { Link } from 'react-router-dom';
+
 import Skeleton from 'react-loading-skeleton';
 import styles from './Profile.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -47,6 +49,26 @@ const Profile = memo(({
     if (profileInfo?.user?.profileImage) {
       return getProfileImageURL(profileInfo?.user?.profileImage);
     } return '/defaultProfile.png';
+  };
+
+  const postContent = (posts) => {
+    if (posts) {
+      if (posts.length === 0) {
+        return (
+          <p className={styles.noPosts}>
+            Sorry. There are no posts to show.
+            {' '}
+            <Link to="/timeline">Make your first now</Link>
+          </p>
+        );
+      }
+      return posts.map((post) => (
+        <PostCard post={post} page="profile" fetchFunction={fetchProfileInfo} />
+      ));
+    }
+    return Array(3)
+      .fill('-')
+      .map(() => <PostCardSkeleton />);
   };
 
   return (
@@ -89,30 +111,12 @@ const Profile = memo(({
         </div>
         <div className={styles.profileInfo}>
           <h2>Bio</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
-            perferendis molestiae dicta possimus nostrum earum, unde ex. Tempora
-            praesentium unde sed neque illo culpa, libero ipsa sint officia
-            maiores commodi!
-          </p>
+          <p>{profileInfo?.user?.bio}</p>
         </div>
       </div>
 
       <div className={styles.posts}>
-        <div>
-          {profileInfo?.posts ? (
-            profileInfo?.posts?.length > 0
-            && profileInfo?.posts.map((post) => (
-              <PostCard
-                post={post}
-                page="profile"
-                fetchFunction={fetchProfileInfo}
-              />
-            ))
-          ) : (
-            <PostCardSkeleton />
-          )}
-        </div>
+        <div>{postContent(profileInfo?.posts)}</div>
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}

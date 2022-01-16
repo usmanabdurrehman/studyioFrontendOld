@@ -78,6 +78,14 @@ const NavbarContainer = memo(() => {
     setShowNames(false);
   }, [setShowNames, setSearchNames]);
 
+  const navigateToProfilePage = (doerId) => {
+    history.push(`/profile/${doerId}`);
+  };
+
+  const navigateToPostPage = (postId) => {
+    history.push(`/post/${postId}`);
+  };
+
   useEffect(() => {
     getNotificationCount();
     socket.on('changes', () => {
@@ -101,6 +109,8 @@ const NavbarContainer = memo(() => {
       removeSearchResults={removeSearchResults}
       onSearchChange={onSearchChange}
       unshowNotifications={unshowNotifications}
+      navigateToProfilePage={navigateToProfilePage}
+      navigateToPostPage={navigateToPostPage}
     />
   );
 });

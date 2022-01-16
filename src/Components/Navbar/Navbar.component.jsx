@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ClickAwayListener from 'react-click-away-listener';
 
@@ -14,22 +14,23 @@ import SearchIcon from '@material-ui/icons/Search';
 import { Badge, Container } from '..';
 import styles from './Navbar.module.scss';
 
-const Navbar = memo(({
-  user: { _id, profileImage },
-  searchNames,
-  showNames,
-  notifications,
-  unseenNotificationCount,
-  showNotifications,
-  logout,
-  handleNotificationClick,
-  showNamesList,
-  removeSearchResults,
-  onSearchChange,
-  unshowNotifications,
-}) => {
-  const history = useHistory();
-  return (
+const Navbar = memo(
+  ({
+    user: { _id, profileImage },
+    searchNames,
+    showNames,
+    notifications,
+    unseenNotificationCount,
+    showNotifications,
+    logout,
+    handleNotificationClick,
+    showNamesList,
+    removeSearchResults,
+    onSearchChange,
+    unshowNotifications,
+    navigateToProfilePage,
+    navigateToPostPage,
+  }) => (
     <div className={styles.navbar}>
       <Container classes={{ container: styles.navWrapper }}>
         <div>
@@ -50,15 +51,15 @@ const Navbar = memo(({
               {searchNames && showNames && (
                 <div className={styles.nameList}>
                   {searchNames.map(
-                    ({ name, _id: userId, profileImageName }) => (
+                    ({ name, _id: userId, profileImage: profileImageName }) => (
                       <div
                         onClick={() => {
                           removeSearchResults();
-                          history.push(`/profile/${userId}`);
+                          navigateToProfilePage(userId);
                         }}
                         onKeyPress={() => {
                           removeSearchResults();
-                          history.push(`/profile/${userId}`);
+                          navigateToProfilePage(userId);
                         }}
                         role="button"
                         tabIndex="-1"
@@ -105,21 +106,25 @@ const Navbar = memo(({
                 <div className={styles.notificationsList}>
                   {notifications.map(
                     ({
-                      message, profileImageName, action, doerId, postId,
+                      message,
+                      profileImage: profileImageName,
+                      action,
+                      doerId,
+                      postId,
                     }) => (
                       <div
                         className={styles.notificationItem}
                         onClick={() => {
                           unshowNotifications();
                           action === 'followed'
-                            ? history.push(`/profile/${doerId}`)
-                            : history.push(`/post/${postId}`);
+                            ? navigateToProfilePage(doerId)
+                            : navigateToPostPage(postId);
                         }}
                         onKeyPress={() => {
                           unshowNotifications();
                           action === 'followed'
-                            ? history.push(`/profile/${doerId}`)
-                            : history.push(`/post/${postId}`);
+                            ? navigateToProfilePage(doerId)
+                            : navigateToPostPage(postId);
                         }}
                         role="button"
                         tabIndex="-1"
@@ -146,7 +151,7 @@ const Navbar = memo(({
         </div>
       </Container>
     </div>
-  );
-});
+  ),
+);
 
 export default Navbar;

@@ -1,11 +1,14 @@
 import React, {
   useState, useEffect, useRef, useMemo, memo,
 } from 'react';
-import service from 'services';
 
 import { useSelector } from 'react-redux';
 
 import { Chat } from 'Components';
+
+import {
+  getConversationById, getConversationsByUser, createConversation, fetchConversationNames,
+} from 'queries';
 
 const ChatContainer = memo(() => {
   const socket = useSelector((state) => state.socket);
@@ -32,14 +35,8 @@ const ChatContainer = memo(() => {
   );
 
   const fetchNamesHandler = async (name) => {
-    service({
-      method: 'post',
-      url: '/user/conversations/more',
-      body: { name },
-    }).then((res) => {
-      const { data } = res;
-      data && setSearchNames(data);
-    });
+    const data = await fetchConversationNames(name);
+    data && setSearchNames(data);
   };
 
   const onSearchChange = (e) => {
@@ -48,37 +45,23 @@ const ChatContainer = memo(() => {
     value ? fetchNamesHandler(e.target.value) : setSearchNames(null);
   };
 
-  const openConversation = (id) => {
-    service({
-      url: `/user/conversations/${id}`,
-    }).then((res) => {
-      const { status, conversation } = res.data;
-      if (status) {
-        setOpenedChat(conversation);
-        setMessages(conversation.messages);
-        setIndex(1);
-      }
-    });
+  const openConversation = async (id) => {
+    const { status, conversation } = await getConversationById(id);
+    if (status) {
+      setOpenedChat(conversation);
+      setMessages(conversation.messages);
+      setIndex(1);
+    }
   };
 
   const startConversation = async (profile) => {
-    service({
-      url: '/user/conversations',
-      method: 'post',
-      data: { id: profile._id },
-    }).then((res) => {
-      const { status, conversation } = res.data;
-      status && openConversation(conversation._id);
-    });
+    const { status, conversation } = await createConversation(profile._id);
+    status && openConversation(conversation._id);
   };
 
-  const getAllConversations = () => {
-    service({
-      url: '/user/conversations',
-    }).then((res) => {
-      const { status, conversations: userConversations } = res.data;
-      status && setConversations(userConversations);
-    });
+  const getAllConversations = async () => {
+    const { status, conversations: userConversations } = await getConversationsByUser();
+    status && setConversations(userConversations);
   };
 
   useEffect(() => {

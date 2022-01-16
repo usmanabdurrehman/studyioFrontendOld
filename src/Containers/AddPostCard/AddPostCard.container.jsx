@@ -132,6 +132,7 @@ const AddPostCardContainer = memo(({ post, fetchFunction }) => {
     (newValue) => setPostText(newValue),
     [setPostText],
   );
+
   return (
     <AddPostCard
       post={post}

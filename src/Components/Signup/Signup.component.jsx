@@ -67,7 +67,7 @@ const Signup = memo(({
                 </label>
               </div>
             </div>
-            <div className="form-group">
+            <div>
               <TextField
                 name="name"
                 label="Name"
@@ -79,11 +79,12 @@ const Signup = memo(({
                   },
                 }}
                 onChange={onChange}
+                required
               />
             </div>
-            <div className="form-group">
+            <div>
               <TextField
-                name="username"
+                name="email"
                 label="Email"
                 className={classes.textField}
                 InputLabelProps={{
@@ -95,9 +96,27 @@ const Signup = memo(({
                 type="email"
                 onChange={onChange}
                 autoComplete="username"
+                required
               />
             </div>
-            <FormControl>
+            <div>
+              <TextField
+                name="bio"
+                label="Bio"
+                multiline
+                rows={4}
+                className={classes.textField}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.labelRoot,
+                    focused: classes.labelFocused,
+                  },
+                }}
+                onChange={onChange}
+                required
+              />
+            </div>
+            <FormControl required>
               <InputLabel
                 htmlFor="outlined-adornment-password"
                 className={classes.textField}
@@ -135,6 +154,7 @@ const Signup = memo(({
                   </InputAdornment>
                 )}
                 labelWidth={70}
+                required
               />
             </FormControl>
             <div className={styles.buttonWrapper}>

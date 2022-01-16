@@ -13,6 +13,7 @@ const SignupContainer = memo(({ navigateToSignin }) => {
     password: '',
     image: '',
     imgUrl: '',
+    bio: '',
   });
 
   const imageOnChange = useCallback(
@@ -52,6 +53,16 @@ const SignupContainer = memo(({ navigateToSignin }) => {
     event.preventDefault();
   }, []);
 
+  const onChange = useCallback(
+    (e) => {
+      setFields((prevFields) => ({
+        ...prevFields,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    [setFields],
+  );
+
   return (
     <Signup
       handleClickShowPassword={handleClickShowPassword}
@@ -60,6 +71,7 @@ const SignupContainer = memo(({ navigateToSignin }) => {
       handleSubmit={handleSubmit}
       imageOnChange={imageOnChange}
       fields={fields}
+      onChange={onChange}
     />
   );
 });

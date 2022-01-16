@@ -1,4 +1,5 @@
 export { default as signin } from './signin';
+
 export { default as signup } from './signup';
 export { default as getTimelinePosts } from './getTimelinePosts';
 export { default as getTechNews } from './getTechNews';
@@ -27,3 +28,8 @@ export { default as hidePost } from './hidePost';
 export { default as unhidePost } from './unhidePost';
 
 export { default as commentOnPost } from './commentOnPost';
+
+export { default as createConversation } from './createConversation';
+export { default as getConversationById } from './getConversationById';
+export { default as getConversationsByUser } from './getConversationByUser';
+export { default as fetchConversationNames } from './fetchConversationNames';

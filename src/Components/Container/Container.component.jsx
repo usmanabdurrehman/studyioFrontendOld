@@ -18,8 +18,6 @@ const Container = memo(({
     return styles[`width-${isKeyInSizes ? maxWidth : 'lg'}`];
   };
 
-  console.log(maxWidthClass());
-
   return (
     <div
       className={classNames({

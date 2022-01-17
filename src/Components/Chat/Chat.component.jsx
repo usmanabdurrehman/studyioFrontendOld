@@ -38,7 +38,7 @@ const Chat = memo(({
   return (
     <div className={styles.chat}>
       <div className={styles.chatHeader}>
-        {index ? openedChatMember.name : 'Inbox'}
+        {index ? openedChatMember?.name : 'Inbox'}
         {index === 1 && (
           <ArrowBackIosIcon
             className={styles.arrowBackward}
@@ -61,6 +61,7 @@ const Chat = memo(({
           {conversations && conversations?.length ? (
             <div className={styles.nameList}>
               {conversations.map((conversation) => {
+                console.log('conversation', conversation);
                 const { name, profileImage } = conversation.participants.find(
                   (participant) => participant._id !== userId,
                 );
@@ -95,8 +96,8 @@ const Chat = memo(({
               )}
               {searchNames.map(({ name, _id, profileImage }) => (
                 <div
-                  onClick={() => startConversation({ _id, name, profileImage })}
-                  onKeyPress={() => startConversation({ _id, name, profileImage })}
+                  onClick={() => startConversation(_id)}
+                  onKeyPress={() => startConversation(_id)}
                   role="button"
                   tabIndex="-1"
                 >

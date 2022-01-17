@@ -54,8 +54,8 @@ const ChatContainer = memo(() => {
     }
   };
 
-  const startConversation = async (profile) => {
-    const { status, conversation } = await createConversation(profile._id);
+  const startConversation = async (id) => {
+    const { status, conversation } = await createConversation(id);
     status && openConversation(conversation._id);
   };
 

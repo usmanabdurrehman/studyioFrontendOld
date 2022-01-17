@@ -1,10 +1,10 @@
 import service from 'services';
 
-const createConversation = async (profile) => {
+const createConversation = async (id) => {
   const { data } = await service({
     url: '/user/conversations',
     method: 'post',
-    data: { id: profile._id },
+    data: { id },
   });
   return data;
 };

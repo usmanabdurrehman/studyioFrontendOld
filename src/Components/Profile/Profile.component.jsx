@@ -10,8 +10,6 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 
 import Modal from 'react-modal';
 
-import { getProfileImageURL } from 'utils';
-
 import { Link } from 'react-router-dom';
 
 import Skeleton from 'react-loading-skeleton';
@@ -47,7 +45,7 @@ const Profile = memo(({
       return fields.imageUrl;
     }
     if (profileInfo?.user?.profileImage) {
-      return getProfileImageURL(profileInfo?.user?.profileImage);
+      return profileInfo?.user?.profileImage;
     } return '/defaultProfile.png';
   };
 
@@ -78,7 +76,7 @@ const Profile = memo(({
           <div className={styles.profileImageWrapper}>
             {profileInfo?.user?.profileImage ? (
               <img
-                src={getProfileImageURL(profileInfo?.user?.profileImage)}
+                src={profileInfo?.user?.profileImage}
                 className={styles.profilePic}
                 alt="Profile"
               />

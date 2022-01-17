@@ -8,8 +8,6 @@ import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import { getProfileImageURL } from 'utils';
-
 import SearchIcon from '@material-ui/icons/Search';
 import { Badge, Container } from '..';
 import styles from './Navbar.module.scss';
@@ -65,7 +63,7 @@ const Navbar = memo(
                         tabIndex="-1"
                       >
                         <img
-                          src={getProfileImageURL(profileImageName)}
+                          src={profileImageName}
                           alt=""
                           className={styles.searchImage}
                         />
@@ -87,11 +85,7 @@ const Navbar = memo(
           </div>
           <div>
             <Link to={`/profile/${_id}`}>
-              <img
-                src={getProfileImageURL(profileImage)}
-                alt=""
-                className={styles.profileImage}
-              />
+              <img src={profileImage} alt="" className={styles.profileImage} />
             </Link>
           </div>
           <ClickAwayListener onClickAway={() => unshowNotifications()}>
@@ -104,42 +98,47 @@ const Navbar = memo(
               </Badge>
               {notifications && showNotifications && (
                 <div className={styles.notificationsList}>
-                  {notifications.map(
-                    ({
-                      message,
-                      profileImage: profileImageName,
-                      action,
-                      doerId,
-                      postId,
-                    }) => (
-                      <div
-                        className={styles.notificationItem}
-                        onClick={() => {
-                          unshowNotifications();
-                          action === 'followed'
-                            ? navigateToProfilePage(doerId)
-                            : navigateToPostPage(postId);
-                        }}
-                        onKeyPress={() => {
-                          unshowNotifications();
-                          action === 'followed'
-                            ? navigateToProfilePage(doerId)
-                            : navigateToPostPage(postId);
-                        }}
-                        role="button"
-                        tabIndex="-1"
-                      >
-                        <img
-                          src={getProfileImageURL(profileImageName)}
-                          alt=""
-                          className={styles.profileImage}
-                        />
-                        <div className={styles.notificationMessage}>
-                          {message}
+                  {notifications.length === 0
+                    ? (
+                      <p className={styles.noNotif}>
+                        Sorry, there are no notifications to show
+                      </p>
+                    ) : notifications.map(
+                      ({
+                        message,
+                        profileImage: profileImageName,
+                        action,
+                        doerId,
+                        postId,
+                      }) => (
+                        <div
+                          className={styles.notificationItem}
+                          onClick={() => {
+                            unshowNotifications();
+                            action === 'followed'
+                              ? navigateToProfilePage(doerId)
+                              : navigateToPostPage(postId);
+                          }}
+                          onKeyPress={() => {
+                            unshowNotifications();
+                            action === 'followed'
+                              ? navigateToProfilePage(doerId)
+                              : navigateToPostPage(postId);
+                          }}
+                          role="button"
+                          tabIndex="-1"
+                        >
+                          <img
+                            src={profileImageName}
+                            alt=""
+                            className={styles.profileImage}
+                          />
+                          <div className={styles.notificationMessage}>
+                            {message}
+                          </div>
                         </div>
-                      </div>
-                    ),
-                  )}
+                      ),
+                    )}
                 </div>
               )}
             </div>

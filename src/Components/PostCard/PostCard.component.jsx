@@ -9,7 +9,7 @@ import { Button, Comment } from 'Components';
 import { FileIcon, defaultStyles } from 'react-file-icon';
 import Popover from '@material-ui/core/Popover';
 
-import { classNames, getProfileImageURL, getFileURL } from 'utils';
+import { classNames } from 'utils';
 import { useSelector } from 'react-redux';
 import styles from './PostCard.module.scss';
 
@@ -46,7 +46,7 @@ const PostCard = memo(({
       <div className={styles.cardHeader}>
         <img
           className={styles.profilePicture}
-          src={getProfileImageURL(post?.user?.profileImage)}
+          src={post?.user?.profileImage}
           alt="Profile"
         />
         <p className={styles.nameHandle}>
@@ -69,7 +69,7 @@ const PostCard = memo(({
             const ext = splittedFilename[splittedFilename.length - 1];
             return (
               <a
-                href={getFileURL(file.filename)}
+                href={file.filename}
                 download={file.originalFilename} // download does not work for cross origin servers
               >
                 <div className={styles.fileCard}>
@@ -87,7 +87,7 @@ const PostCard = memo(({
         <div className={styles.postImagesWrapper}>
           {post.images.map((image) => (
             <div>
-              <img src={getFileURL(image)} alt="File" />
+              <img src={image} alt="File" />
             </div>
           ))}
         </div>

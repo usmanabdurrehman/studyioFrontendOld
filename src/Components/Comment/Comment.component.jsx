@@ -1,12 +1,11 @@
 import React, { memo } from 'react';
-import { getProfileImageURL } from 'utils';
 import styles from './Comment.module.scss';
 
 const Comment = memo(({ comment }) => (
   <div className={styles.commentWrapper}>
     <div>
       <img
-        src={getProfileImageURL(comment?.commenter?.profileImage)}
+        src={comment?.commenter?.profileImage}
         className={styles.commentProfilePicture}
         alt="Profile"
       />

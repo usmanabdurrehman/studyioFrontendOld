@@ -7,8 +7,6 @@ import { FileIcon, defaultStyles } from 'react-file-icon';
 
 import ImageIcon from '@material-ui/icons/Image';
 
-import { getFileURL } from 'utils';
-
 import CancelIcon from '@material-ui/icons/Cancel';
 import { Button } from '..';
 import styles from './AddPostCard.module.scss';
@@ -108,7 +106,7 @@ const AddPostCard = memo(({
               <img
                 src={
                       typeof image === 'string'
-                        ? getFileURL(image)
+                        ? image
                         : URL.createObjectURL(image)
                     }
                 alt="Post"

@@ -4,8 +4,6 @@ import SwipeableViews from 'react-swipeable-views';
 
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-import { getProfileImageURL } from 'utils';
-
 import styles from './Chat.module.scss';
 
 const Chat = memo(({
@@ -74,7 +72,7 @@ const Chat = memo(({
                     tabIndex="-1"
                   >
                     <img
-                      src={getProfileImageURL(profileImage)}
+                      src={profileImage}
                       alt=""
                       className={styles.searchImage}
                     />
@@ -103,7 +101,7 @@ const Chat = memo(({
                   tabIndex="-1"
                 >
                   <img
-                    src={getProfileImageURL(profileImage)}
+                    src={profileImage}
                     alt=""
                     className={styles.searchImage}
                   />

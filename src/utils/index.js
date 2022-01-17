@@ -23,7 +23,3 @@ export const typeToColorMapping = ({ color, variant = 'filled' }) => {
   const classString = `${returnDefault({ variant })}-${returnDefault({ color })}`;
   return themeStyles[classString];
 };
-
-export const getProfileImageURL = (name) => `${process.env.REACT_APP_BACKEND_BASEURL}/profileImages/${name}`;
-
-export const getFileURL = (name) => `${process.env.REACT_APP_BACKEND_BASEURL}/postImages/${name}`;

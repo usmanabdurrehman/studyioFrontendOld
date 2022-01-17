@@ -61,7 +61,6 @@ const Chat = memo(({
           {conversations && conversations?.length ? (
             <div className={styles.nameList}>
               {conversations.map((conversation) => {
-                console.log('conversation', conversation);
                 const { name, profileImage } = conversation.participants.find(
                   (participant) => participant._id !== userId,
                 );
